@@ -1,0 +1,48 @@
+#loginModal,
+#signupModal {
+    top: -100%;
+    transition: 1000ms;
+}
+
+#loginModal.show,
+#signupModal.show {
+    top: 0;
+}
+
+#signupModal h1,
+#loginModal h1 {
+    font-family: initial;
+    font-size: 24px !important;
+    text-transform: none;
+}
+
+#signupModal label,
+#loginModal label {
+    display: inline-block;
+    font-family: initial;
+    font-size: 16px;
+    text-transform: none;
+}
+
+#signupModal input,
+#loginModal input {
+    margin: 0;
+}
+
+#signupModal .invalid-feedback,
+#loginModal .invalid-feedback {
+    font-family: initial;
+    font-size: 14px;
+    text-transform: none;
+}
+
+#signupModal button[type=submit],
+#loginModal button[type=submit] {
+    font-family: initial;
+    font-size: 16px;
+}
+
+#signupModal button[type=submit]:disabled,
+#loginModal button[type=submit]:disabled {
+    pointer-events: all;
+}

@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebdotApp-1</title>
+    <link rel="stylesheet" href="./css/normalize.css">
+    <link rel="stylesheet" href="./css/bootstrap.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/style-fix.css">
+    <link rel="stylesheet" href="./css/main-header.css">
+    <link rel="stylesheet" href="./css/modals.css">
+    <link rel="stylesheet" href="./nouislider/nouislider.css">
+    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
+    <!-- подключение шрифтов -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rammetto+One&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/9fd12c653b.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+    <header id="page-header" class="main-header" data-guest="true">
+        <div class="container">
+            <nav class="main-header-nav">
+                <a class="logo">WebdotApp-1</a>
+
+                <!-- guest-menu -->
+                <ul id="guest-menu" class="site-navigation">
+                    <li class="site-navigation-item">
+                        <a id="login-btn" href="#">Вход</a>
+                    </li>
+                    <li class="site-navigation-item">
+                        <a id="signup-btn" href="#">Регистрация</a>
+                    </li>
+                </ul>
+
+                <!-- user-menu -->
+                <ul id="user-menu" class="site-navigation">
+                    <li class="site-navigation-item">
+                        <img
+                            id="user-avatar"
+                            class="wd-user-avatar"
+                            src=""
+                            alt=""
+                        >
+                        <a id="username"></a>
+                    </li>
+                    <li class="site-navigation-item">
+                        <button id="logout-btn" class="btn btn-dark" type="button">Выход</button>
+                    </li>
+                </ul>
+
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Фильтрация изображений от других пользователей -->
+        <section class="img-filters img-filters--inactive container">
+            <h2 class="img-filters__title visually-hidden">Фильтр фотографий</h2>
+            <form
+                class="img-filters__form"
+                action=""
+                method="get"
+                enctype="application/x-www-form-urlencoded"
+                autocomplete="off"
+            >
+                <button id="filter-default" class="img-filters__button img-filters__button--active" type="button">По умолчанию</button>
+                <button id="filter-random" class="img-filters__button" type="button">Случайные</button>
+                <button id="filter-discussed" class="img-filters__button" type="button">Обсуждаемые</button>
+            </form>
+        </section>
+
+        <!-- Контейнер для изображений от других пользователей -->
+        <section class="pictures container">
+            <h2 class="pictures__title visually-hidden">Фотографии других пользователей</h2>
+
+            <!-- Поле для загрузки нового изображения на сайт -->
+            <section class="img-upload">
+                <div class="img-upload__wrapper">
+                    <h2 class="img-upload__title visually-hidden">Загрузка фотографии</h2>
+                    <form
+                        id="upload-select-image"
+                        class="img-upload__form"
+                        action=""
+                        method="post"
+                        enctype="multipart/form-data"
+                        autocomplete="off"
+                    >
+
+                        <!-- Изначальное состояние поля для загрузки изображения -->
+                        <fieldset class="img-upload__start">
+                            <input
+                                id="upload-file"
+                                class="img-upload__input visually-hidden"
+                                type="file"
+                                name="filename"
+                                required
+                                disabled
+                            >
+                            <label class="img-upload__label img-upload__control" for="upload-file"><i class="fa-solid fa-upload"></i></label>
+                        </fieldset>
+
+                        <!-- Форма редактирования изображения -->
+                        <div class="img-upload__overlay hidden">
+                            <div class="img-upload__wrapper">
+                                <div class="img-upload__preview-container">
+
+                                    <!-- Изменение размера изображения -->
+                                    <fieldset class="img-upload__scale scale">
+                                        <button
+                                            class="scale__control scale__control--smaller"
+                                            type="button"
+                                            style="cursor: pointer;"
+                                        >Уменьшить</button>
+                                        <input
+                                            class="scale__control scale__control--value"
+                                            type="text"
+                                            name="scale"
+                                            value="100%"
+                                            title="Image Scale"
+                                            readonly
+                                        >
+                                        <button
+                                            class="scale__control scale__control--bigger"
+                                            type="button"
+                                            style="cursor: not-allowed;"
+                                        >Увеличить</button>
+                                    </fieldset>
+
+                                    <!-- Предварительный просмотр изображения -->
+                                    <div class="img-upload__preview">
+                                        <img src="" width="568" height="568" alt="Предварительный просмотр фотографии">
+                                    </div>
+
+                                    <!-- Изменение глубины эффекта, накладываемого на изображение -->
+                                    <fieldset class="img-upload__effect-level effect-level hidden">
+                                        <input
+                                            class="effect-level__value"
+                                            type="number"
+                                            name="effect_level"
+                                            value=""
+                                            step="any"
+                                        >
+                                        <div class="effect-level__slider"></div>
+                                    </fieldset>
+
+                                    <!-- Кнопка для закрытия формы редактирования изображения -->
+                                    <button id="upload-cancel" class="img-upload__cancel cancel" type="reset">Закрыть</button>
+                                </div>
+
+                                <!-- Наложение эффекта на изображение -->
+                                <fieldset class="img-upload__effects effects">
+                                    <ul class="effects__list">
+                                    </ul>
+                                </fieldset>
+
+                                <!-- Добавление хэш-тегов и комментария к изображению -->
+                                <fieldset class="img-upload__text text">
+                                    <input
+                                        class="text__hashtags"
+                                        type="text"
+                                        name="hashtags"
+                                        value=""
+                                        placeholder="#ХэшТег"
+                                    >
+                                    <textarea
+                                        class="text__description"
+                                        name="description"
+                                        placeholder="Ваш комментарий..."
+                                    ></textarea>
+                                </fieldset>
+
+                                <!-- Кнопка для отправки данных на сервер -->
+                                <button id="upload-submit" class="btn btn-primary" type="submit" name="button">Опубликовать</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Здесь будут изображения других пользователей -->
+
+        </section>
+
+        <!-- Полноэкранный показ изображения -->
+        <section class="big-picture overlay hidden">
+            <h2 class="big-picture__title visually-hidden">Просмотр фотографии</h2>
+            <div class="big-picture__preview">
+
+                <!-- Просмотр изображения -->
+                <div class="big-picture__img" style="background-color: #232321;">
+                    <img
+                        src=""
+                        width="600"
+                        height="600"
+                        alt=""
+                    >
+                </div>
+
+                <!-- Информация об изображении. Подпись, комментарии, количество лайков -->
+                <div class="big-picture__social social">
+                    <div class="social__header">
+                        <img
+                            class="social__picture"
+                            src="./img/avatars/1600w-WsQ560IKaR0.webp"
+                            width="35"
+                            height="35"
+                            alt="Аватар автора фотографии"
+                        >
+                        <p class="social__caption"></p>
+                        <p class="social__likes">Нравится <button class="likes-count">356</button></p>
+                    </div>
+
+                    <!-- Комментарии к изображению -->
+                    <div class="social__comment-count">
+                        <span class="comments-count--rendered">0</span> из
+                        <span class="comments-count">125</span> комментариев
+                    </div>
+                    <ul class="social__comments"></ul>
+
+                    <!-- Кнопка для загрузки новой порции комментариев -->
+                    <button class="social__comments-loader comments-loader" type="button">Загрузить еще</button>
+
+                    <!-- Форма для отправки комментария -->
+                    <div>
+                        <form
+                            id="comment-form"
+                            class="social__footer"
+                            action=""
+                            method="post"
+                            enctype="application/x-www-form-urlencoded"
+                            autocomplete="off"
+                        >
+                            <img
+                                class="social__picture wd-user-avatar"
+                                src="./img/avatars/1600w-WsQ560IKaR0.webp"
+                                width="35"
+                                height="35"
+                                alt="Аватар комментатора фотографии"
+                            >
+                            <input
+                                class="social__footer-text"
+                                type="text"
+                                name="message"
+                                placeholder="Ваш комментарий..."
+                                required
+                            >
+                            <button class="btn btn-primary" type="submit" name="button" disabled>Отправить</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Кнопка для выхода из полноэкранного просмотра изображения -->
+                <button id="picture-cancel" class="big-picture__cancel cancel" type="reset">Закрыть</button>
+            </div>
+        </section>
+    </main>
+
+    <footer class="page-footer container">
+        <div class="page-footer__wrapper">
+            <div class="page-footer__copyright copyright">
+                <p>
+                    Разработка:
+                    <a
+                        class="copyright__link copyright__link--text"
+                        href="https://t.me/anatolev_max"
+                    >WebdotStudio</a>
+                </p>
+            </div>
+            <ul class="page-footer__contacts contacts">
+                <li><a href="#" class="contacts__link contacts__link--twitter">Twitter</a></li>
+                <li><a href="#" class="contacts__link contacts__link--instagram">Instagtam</a></li>
+                <li><a href="#" class="contacts__link contacts__link--facebook">Facebook</a></li>
+                <li><a href="#" class="contacts__link contacts__link--vk">VK</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <div id="loginModal" class="modal fade" style="display: none; color: #212529; opacity: 1;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Вход</h1>
+                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form
+                        action=""
+                        method=""
+                        enctype="application/x-www-form-urlencoded"
+                        autocomplete="off"
+                        novalidate
+                    >
+                        <div class="mb-3">
+                            <label class="form-label" for="login-email">Электропочта</label>
+                            <input
+                                id="login-email"
+                                class="form-control"
+                                type="email"
+                                name="email"
+                            >
+                            <div class="invalid-feedback"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="login-password">Пароль</label>
+                            <input
+                                id="login-password"
+                                class="form-control"
+                                type="password"
+                                name="password"
+                            >
+                            <div class="invalid-feedback"></div>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-primary" type="submit">Войти</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="signupModal" class="modal fade" style="display: none; color: #212529; opacity: 1;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Регистрация</h1>
+                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form
+                        action=""
+                        method=""
+                        enctype="multipart/form-data"
+                        autocomplete="off"
+                        novalidate
+                    >
+                        <div class="mb-3">
+                            <label class="form-label" for="signup-email">Электропочта</label>
+                            <input
+                                id="signup-email"
+                                class="form-control"
+                                type="email"
+                                name="email"
+                                required
+                            >
+                            <div class="invalid-feedback"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="signup-password">Пароль</label>
+                            <input
+                                id="signup-password"
+                                class="form-control"
+                                type="password"
+                                name="password_hash"
+                                required
+                            >
+                            <div class="invalid-feedback"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="signup-username">Юзернейм</label>
+                            <input
+                                id="signup-username"
+                                class="form-control"
+                                type="text"
+                                name="username"
+                            >
+                            <div class="invalid-feedback"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="signup-avatar" style="display: inline-block">Аватар</label>
+                            <input
+                                id="signup-avatar"
+                                class="form-control"
+                                type="file"
+                                name="avatar"
+                            >
+                            <div class="invalid-feedback"></div>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-primary" type="submit">Зарегистрироваться</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Шаблон изображения случайного пользователя -->
+    <template id="picture">
+        <a href="#" class="picture">
+            <img class="picture__img" src="" width="182" height="182" alt="">
+            <p class="picture__info">
+                <span class="picture__comments"></span>
+                <span class="picture__likes"></span>
+            </p>
+        </a>
+    </template>
+
+    <!-- Сообщение с ошибкой загрузки изображения -->
+    <template id="error">
+        <section class="error">
+            <div class="error__inner">
+                <h2 class="error__title">Ошибка загрузки файла</h2>
+                <button type="button" class="error__button">Загрузить другой файл</button>
+            </div>
+        </section>
+    </template>
+
+    <!-- Сообщение об успешной загрузке изображения -->
+    <template id="success">
+        <section class="success">
+            <div class="success__inner">
+                <h2 class="success__title">Изображение успешно загружено</h2>
+                <button type="button" class="success__button">Круто!</button>
+            </div>
+        </section>
+    </template>
+
+    <!-- шаблон комментария -->
+    <template id="comment">
+        <li class="social__comment">
+            <img
+                class="social__picture"
+                src=""
+                alt="имя комментатора"
+                width="35"
+                height="35"
+            >
+            <p class="social__text"></p>
+        </li>
+    </template>
+
+    <!-- Экран загрузки изображения -->
+    <template id="messages">
+        <div class="img-upload__message img-upload__message--loading">
+            Загружаем...
+            <div class="progress">
+                <div
+                    class="progress-bar progress-bar-striped progress-bar-animated"
+                    role="progressbar"
+                    aria-label="Animated striped example"
+                    aria-valuenow="0"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                ></div>
+            </div>
+        </div>
+    </template>
+
+    <template id="effect-item">
+        <li class="effects__item">
+            <input
+                id="effect-none"
+                class="effects__radio visually-hidden"
+                type="radio"
+                name="effect_id"
+                value="1"
+            >
+            <label class="effects__label" for="effect-none">
+                <span class="effects__preview effects__preview--none"></span>
+            </label>
+        </li>
+    </template>
+
+    <!-- modal-backdrop -->
+    <template id="modal-backdrop">
+        <div class="modal-backdrop fade show"></div>
+    </template>
+
+    <!-- spinner -->
+    <template id="spinner">
+        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+    </template>
+
+    <!-- comments-loader -->
+    <template id="comments-loader">
+        <span class="comments-loader--active"></span>
+    </template>
+
+    <script src="./nouislider/nouislider.js"></script>
+    <script src="./bundle.js"></script>
+</body>
+</html>

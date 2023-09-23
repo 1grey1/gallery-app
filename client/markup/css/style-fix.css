@@ -1,0 +1,108 @@
+.img-upload__overlay {
+    padding-bottom: 60px;
+}
+
+.big-picture #comment-form button[type=submit]:disabled,
+.pictures .img-upload #upload-select-image #upload-submit,
+.likes-count {
+    pointer-events: all;
+}
+
+.likes-count {
+    border: none;
+    background: none;
+}
+
+label[for=upload-file] {
+    position: fixed;
+    top: auto;
+    bottom: 30px !important;
+    left: 30px !important;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80px;
+    height: 80px;
+    font-size: 20px;
+    color: #000;
+    background-color: #fff;
+    border-radius: 100%;
+    transition-duration: 200ms;
+}
+
+label[for=upload-file]:hover {
+    transform: rotate(360deg);
+}
+
+.page-footer__copyright p {
+    margin: 0;
+    text-transform: none;
+}
+
+#user-avatar {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 100%;
+}
+
+.big-picture__img img {
+    width: 600px;
+    height: 600px;
+    object-fit: cover;
+    object-position: center;
+}
+
+.big-picture__social .social__header .social__picture {
+    width: 35px;
+    height: 35px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 100%;
+}
+
+.social__footer-text {
+    width: auto;
+    flex-grow: 1;
+}
+
+#comment-form .btn {
+    cursor: pointer;
+}
+
+#comment-form .social__picture {
+    width: 35px;
+    height: 35px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 100%;
+}
+
+.social__comment .social__picture {
+    width: 35px;
+    height: 35px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 100%;
+}
+
+.img-upload__message .progress .progress-bar {
+    width: 0;
+    transition-duration: 2000ms;
+}
+
+.img-upload__overlay .img-upload__wrapper {
+    width: 600px;
+}
+
+.img-upload__message--loading .progress {
+    position: absolute;
+    bottom: 40%;
+    left: 50%;
+    width: 300px;
+    -webkit-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    transform: translateX(-50%);
+}

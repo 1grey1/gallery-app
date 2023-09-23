@@ -1,0 +1,82 @@
+.main-header, .main-header * {
+    text-transform: none !important;
+}
+
+.main-header {
+    font-family: initial;
+    background-color: rgba(238, 210, 30, 1);
+}
+
+.main-header .main-header-nav {
+    display: flex;
+    height: 80px;
+}
+
+.main-header .main-header-nav .logo {
+    display: flex;
+    align-items: center;
+    font-family: 'Rammetto One', cursive;
+    font-size: 18px;
+    font-weight: 400;
+    color: #000;
+}
+
+.main-header[data-guest="true"] .main-header-nav #guest-menu {
+    display: flex;
+}
+
+.main-header[data-guest="false"] .main-header-nav #guest-menu {
+    display: none;
+}
+
+.main-header[data-guest="true"] .main-header-nav #user-menu {
+    display: none;
+}
+
+.main-header[data-guest="false"] .main-header-nav #user-menu {
+    display: flex;
+}
+
+.main-header .main-header-nav ul {
+    padding: 0;
+    margin: 0;
+    margin-left: auto;
+    list-style: none;
+}
+
+.main-header .main-header-nav ul li {
+    display: flex;
+    align-items: center;
+}
+
+.main-header .main-header-nav ul li:not(:first-child) {
+    margin-left: 30px;
+}
+
+.main-header .main-header-nav ul li a {
+    font-size: 18px;
+    font-weight: 400;
+    color: #000;
+    text-decoration: none;
+}
+
+.main-header .main-header-nav #user-menu li:first-child {
+    display: flex;
+}
+
+.main-header .main-header-nav #user-menu li #username {
+    margin-left: 10px;
+}
+
+.main-header .main-header-nav #user-menu li #username span {
+    font-weight: 700;
+}
+
+.main-header .main-header-nav #user-menu li #logout-btn {
+    align-self: center;
+    cursor: pointer;
+}
+
+.main-header .main-header-nav #user-menu li #logout-btn:disabled {
+    pointer-events: all;
+}
