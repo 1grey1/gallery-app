@@ -1,3 +1,4 @@
+const showMoreButtonElement = document.querySelector('.social__comments-loader');
 const commentListElement = document.querySelector('.social__comments');
 const commentTemlate = document.getElementById('comment')
     .content
@@ -5,6 +6,12 @@ const commentTemlate = document.getElementById('comment')
 
 const renderCommentList = (comments) => {
     commentListElement.innerHTML = '';
+
+    if (comments.length <= 5) {
+        showMoreButtonElement.classList.add('hidden');
+    } else {
+        showMoreButtonElement.classList.remove('hidden');
+    }
 
     for (const comment of comments) {
         const commentElement = commentTemlate.cloneNode(true);
