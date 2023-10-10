@@ -1,9 +1,11 @@
-import {onScaleControlClick} from "./zoom.js";
+import {zoomPlus, zoomMinus} from './zoom.js';
 
 const uploadModalElement = document.querySelector('.img-upload__overlay');
 const uploadModalOpenElement = document.getElementById('upload-file');
 const uploadModalCloseElement = document.getElementById('upload-cancel');
 const previewImgElement = uploadModalElement.querySelector('.img-upload__preview img');
+const scaleControlBiggerElement = uploadModalElement.querySelector('.scale__control--bigger');
+const scaleControlSmallerElement = uploadModalElement.querySelector('.scale__control--smaller');
 
 const onModalEscKeydown = (evt) => {
     if (evt.code === 'Escape') {
@@ -28,7 +30,8 @@ const openUploadModal = (file) => {
 
     uploadModalCloseElement.addEventListener('click', closeUploadModal);
     document.addEventListener('keydown', onModalEscKeydown);
-    onScaleControlClick
+    scaleControlBiggerElement.addEventListener('click', zoomPlus);
+    scaleControlSmallerElement.addEventListener('click', zoomMinus);
 };
 
 const closeUploadModal = () => {
@@ -37,6 +40,9 @@ const closeUploadModal = () => {
 
     uploadModalCloseElement.removeEventListener('click', closeUploadModal);
     document.removeEventListener('keydown', onModalEscKeydown);
+
+    scaleControlBiggerElement.removeEventListener('click', zoomPlus);
+    scaleControlSmallerElement.removeEventListener('click', zoomMinus);
 };
 
 uploadModalOpenElement.addEventListener('change', () => {
