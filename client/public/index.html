@@ -19,7 +19,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Rammetto+One&display=swap" rel="stylesheet">
-    <script src="https://kit.fontawesome.com/9fd12c653b.js" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -127,12 +126,12 @@
                                         <button
                                             class="scale__control scale__control--bigger"
                                             type="button"
-                                            style="cursor: not-allowed;"
+                                            style="cursor: pointer;"
                                         >Увеличить</button>
                                     </fieldset>
 
                                     <!-- Предварительный просмотр изображения -->
-                                    <div class="img-upload__preview">
+                                    <div class="img-upload__preview" style="border: 1px solid #fff; overflow: hidden; box-sizing: border-box;">
                                         <img src="" width="568" height="568" alt="Предварительный просмотр фотографии">
                                     </div>
 
@@ -462,7 +461,7 @@
                 value="1"
             >
             <label class="effects__label" for="effect-none">
-                <span class="effects__preview effects__preview--none"></span>
+                <span class="effects__preview" style="background-size: contain; background-position: center;"></span>
             </label>
         </li>
     </template>
@@ -483,6 +482,7 @@
     </template>
 
     <!-- <script src="./nouislider/nouislider.js"></script> -->
+    <script src="https://kit.fontawesome.com/27c66a46e6.js" crossorigin="anonymous"></script>
     <script src="./bundle.js"></script>
 </body>
 </html>

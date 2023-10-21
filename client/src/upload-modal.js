@@ -6,6 +6,7 @@ const uploadModalCloseElement = document.getElementById('upload-cancel');
 const previewImgElement = uploadModalElement.querySelector('.img-upload__preview img');
 const scaleControlBiggerElement = uploadModalElement.querySelector('.scale__control--bigger');
 const scaleControlSmallerElement = uploadModalElement.querySelector('.scale__control--smaller');
+const effectPreviewElements = document.getElementsByClassName('effects__item');
 
 const onModalEscKeydown = (evt) => {
     if (evt.code === 'Escape') {
@@ -18,6 +19,9 @@ const updateUploadPreview = (file) => {
 
     reader.addEventListener('load', () => {
         previewImgElement.setAttribute('src', reader.result);
+        for (const previewElement of effectPreviewElements) {
+            previewElement.querySelector('.effects__preview').style.backgroundImage = `url(${reader.result})`;
+        }
     });
 
     reader.readAsDataURL(file);

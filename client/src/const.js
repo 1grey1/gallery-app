@@ -23,8 +23,28 @@ const COMMENT_MESSAGES = [
     'message-5'
 ];
 
+const EFFECTS = [
+    'none',
+    'chrome',
+    'sepia',
+    'marvin',
+    'phobos',
+    'heat'
+];
+
+const VALIDATION_ERROR_KEYS = [
+    'Хэштег должен начинаться c символа "#".',
+    'Строка после решётки, должна состоять только из букв и чисел.',
+    'Хэштег не может состоять только из одной решётки.',
+    'Максимальная длина хэштега - 5 символов (включая решётку).',
+    'Один и тот же хэштег, не может быть использован дважды.',
+    'Нельзя указать больше пяти хэштегов.'
+]
+
 export {
     PICTURE_DESRIPTIONS,
     USER_NAMES,
-    COMMENT_MESSAGES
+    COMMENT_MESSAGES,
+    EFFECTS,
+    VALIDATION_ERROR_KEYS
 };
