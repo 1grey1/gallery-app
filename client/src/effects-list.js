@@ -1,6 +1,5 @@
 import {EFFECTS} from './const.js';
 
-const previewImgElement = document.querySelector('.img-upload__preview img');
 const effectListElement = document.querySelector('.effects__list');
 const effectTemlate = document.getElementById('effect-item')
     .content
@@ -9,21 +8,17 @@ const effectTemlate = document.getElementById('effect-item')
 const  renderEffectsList = () => {
     for (const effect of EFFECTS) {
         const effectElement = effectTemlate.cloneNode(true);
+        const effectName = effect.name;
 
-        if (effect === 'none') {
+        if (effectName === 'none') {
             effectElement.querySelector('.effects__radio').setAttribute('checked', '');
         }
 
-        effectElement.querySelector('.effects__radio').setAttribute('id', `effect-${effect}`);
-        effectElement.querySelector('.effects__label').setAttribute('for', `effect-${effect}`);
-        effectElement.querySelector('.effects__preview').classList.add(`effects__preview--${effect}`);
+        effectElement.querySelector('.effects__radio').setAttribute('id', `effect-${effectName}`);
+        effectElement.querySelector('.effects__label').setAttribute('for', `effect-${effectName}`);
+        effectElement.querySelector('.effects__preview').classList.add(`effects__preview--${effectName}`);
         effectListElement.append(effectElement);
-
-        effectElement.addEventListener('click', () => {
-            previewImgElement.setAttribute('class', '');
-            previewImgElement.classList.add('class', `effects__preview--${effect}`);
-        });
     }
-}
+};
 
 export {renderEffectsList};
