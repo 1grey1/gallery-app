@@ -5,6 +5,6 @@ import './upload-modal.js';
 import './upload-form.js';
 import './effects.js';
 
-const pictures = generatePictures(50);
+const pictures = generatePictures(54);
 renderPicturesList(pictures);
 renderEffectsList();
