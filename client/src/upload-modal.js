@@ -1,5 +1,6 @@
 import {zoomPlus, zoomMinus} from './zoom.js';
 import {onSliderUpdate, onEffectsRadioChange} from './effects.js';
+import {onDescTextareaInput, onHashtagsInput} from './upload-form.js';
 
 const uploadModalElement = document.querySelector('.img-upload__overlay');
 const uploadModalOpenElement = document.getElementById('upload-file');
@@ -10,6 +11,8 @@ const scaleControlSmallerElement = uploadModalElement.querySelector('.scale__con
 const effectPreviewElements = document.getElementsByClassName('effects__item');
 const effectListElement = document.querySelector('.effects__list');
 const effectLevelSliderElement = document.querySelector('.effect-level__slider');
+const hashtagsInput = uploadModalElement.querySelector('.text__hashtags');
+const descriptionTextarea = uploadModalElement.querySelector('.text__description');
 
 const onModalEscKeydown = (evt) => {
     if (evt.code === 'Escape') {
@@ -30,32 +33,64 @@ const updateUploadPreview = (file) => {
     reader.readAsDataURL(file);
 };
 
-const openUploadModal = (file) => {
+const handlers = [
+    {
+        element: uploadModalCloseElement,
+        event: 'click',
+        callback: closeUploadModal
+    },
+    {
+        element: document,
+        event: 'keydown',
+        callback: onModalEscKeydown
+    },
+    {
+        element: scaleControlBiggerElement,
+        event: 'click',
+        callback: zoomPlus
+    },
+    {
+        element: scaleControlSmallerElement,
+        event: 'click',
+        callback: zoomMinus
+    },
+    {
+        element: effectListElement,
+        event: 'change',
+        callback: onEffectsRadioChange
+    },
+    {
+        element: hashtagsInput,
+        event: 'input',
+        callback: onHashtagsInput
+    },
+    {
+        element: descriptionTextarea,
+        event: 'input',
+        callback: onDescTextareaInput
+    }
+];
+
+function openUploadModal(file) {
     updateUploadPreview(file);
     uploadModalElement.classList.remove('hidden');
     document.body.classList.add('modal-open');
 
-    uploadModalCloseElement.addEventListener('click', closeUploadModal);
-    document.addEventListener('keydown', onModalEscKeydown);
+    for (const {element, event, callback} of handlers) {
+        element.addEventListener(event, callback);
+    }
 
-    scaleControlBiggerElement.addEventListener('click', zoomPlus);
-    scaleControlSmallerElement.addEventListener('click', zoomMinus);
-
-    effectListElement.addEventListener('change', onEffectsRadioChange);
     effectLevelSliderElement.noUiSlider.on('update', onSliderUpdate);
 };
 
-const closeUploadModal = () => {
+function closeUploadModal() {
     uploadModalElement.classList.add('hidden');
     document.body.classList.remove('modal-open');
-    
-    uploadModalCloseElement.removeEventListener('click', closeUploadModal);
-    document.removeEventListener('keydown', onModalEscKeydown);
-    
-    scaleControlBiggerElement.removeEventListener('click', zoomPlus);
-    scaleControlSmallerElement.removeEventListener('click', zoomMinus);
-    
-    effectListElement.removeEventListener('change', onEffectsRadioChange);
+
+    for (const {element, event, callback} of handlers) {
+        element.removeEventListener(event, callback);
+    }
+
     effectLevelSliderElement.noUiSlider.off('update');
 };
 

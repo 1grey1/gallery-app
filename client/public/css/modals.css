@@ -1,48 +1,47 @@
-#loginModal,
-#signupModal {
+#login-modal,
+#signup-modal {
     top: -100%;
     transition: 1000ms;
 }
 
-#loginModal.show,
-#signupModal.show {
+#login-modal.show,
+#signup-modal.show {
     top: 0;
 }
 
-#signupModal h1,
-#loginModal h1 {
+#signup-modal h1,
+#login-modal h1 {
     font-family: initial;
     font-size: 24px !important;
     text-transform: none;
 }
 
-#signupModal label,
-#loginModal label {
+#signup-modal label,
+#login-modal label {
     display: inline-block;
     font-family: initial;
     font-size: 16px;
     text-transform: none;
 }
 
-#signupModal input,
-#loginModal input {
+#signup-modal input,
+#login-modal input {
     margin: 0;
 }
 
-#signupModal .invalid-feedback,
-#loginModal .invalid-feedback {
+#signup-modal .invalid-feedback,
+#login-modal .invalid-feedback {
     font-family: initial;
     font-size: 14px;
     text-transform: none;
 }
 
-#signupModal button[type=submit],
-#loginModal button[type=submit] {
+#signup-modal button[type=submit],
+#login-modal button[type=submit] {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     font-family: initial;
     font-size: 16px;
-}
-
-#signupModal button[type=submit]:disabled,
-#loginModal button[type=submit]:disabled {
     pointer-events: all;
 }

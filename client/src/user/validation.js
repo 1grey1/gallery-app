@@ -1,9 +1,12 @@
-const clearValidationErrors = () => {
-
+const clearValidationErrors = (formElement) => {
+    for (const inputElement of formElement.querySelectorAll('input')) {
+        inputElement.classList.remove('is-invalid');
+        inputElement.nextElementSibling.textContent = '';
+    }
 };
 
 const renderValidationErrors = (errors, fields, formElement) => {
-    clearValidationErrors();
+    clearValidationErrors(formElement);
 
     for (const error of errors) {
         if (fields.includes(error.field)) {

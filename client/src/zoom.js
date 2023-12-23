@@ -13,20 +13,13 @@ const isMinValue = (value) => value === SCALE_CONTROL_MIN_VALUE;
 
 const updateScaleControlElements = () => {
     const value = Number(scaleControlValueElement.value.replace('%', ''));
-    // if (isMaxValue(value)) {
-    //     scaleControlBiggerElement.style.cursor = 'not-allowed';
-    // } else {
-    //     scaleControlBiggerElement.style.cursor = 'pointer';
-    // }
-    
-    // if (isMinValue(value)) {
-    //     scaleControlSmallerElement.style.cursor = 'not-allowed';
-    // } else {
-    //     scaleControlSmallerElement.style.cursor = 'pointer';
-    // }
 
-    scaleControlBiggerElement.style.cursor = isMaxValue(value) ? 'not-allowed' : 'pointer';
-    scaleControlSmallerElement.style.cursor = isMinValue(value) ? 'not-allowed' : 'pointer';
+    scaleControlBiggerElement.style.cursor = isMaxValue(value)
+        ? 'not-allowed'
+        : 'pointer';
+    scaleControlSmallerElement.style.cursor = isMinValue(value)
+        ? 'not-allowed'
+        : 'pointer';
 }
 
 const zoomPlus = () => {

@@ -26,10 +26,10 @@ const setLoaderClick = function (comments) {
 }
 
 const renderComments = (comments, from, to) => {
-    for (const comment of comments.slice(from, to)) {
+    for (const {message, user} of comments.slice(from, to)) {
         const commentElement = commentTemlate.cloneNode(true);
-        commentElement.querySelector('.social__text').textContent = comment.message;
-        commentElement.querySelector('.social__picture').setAttribute('src', comment.user.avatar);
+        commentElement.querySelector('.social__text').textContent = message;
+        commentElement.querySelector('.social__picture').setAttribute('src', user.avatar);
         commentListElement.append(commentElement);
         renderedCommentCountElement.textContent = String((+renderedCommentCountElement.textContent) + 1);
     }

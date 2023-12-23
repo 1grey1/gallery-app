@@ -1,81 +1,55 @@
-import {VALIDATION_ERROR_KEYS} from './const.js';
-
-const uploadModalElement = document.querySelector('.img-upload__overlay');
-const hashtagsInput = uploadModalElement.querySelector('.text__hashtags');
-const descriptionTextarea = uploadModalElement.querySelector('.text__description');
+import {VALIDATION_ERROR_KEYS, VALIDATORS} from './validation.js';
 
 const MAX_DESCRIPTION_LENGTH = 400;
-const MAX_HASHTAG_LENGTH = 5;
-const MAX_HASHTAG_COUNT = 5;
 
-if (descriptionTextarea) {
-    descriptionTextarea.addEventListener('input', () => {
-        const valueLength = descriptionTextarea.value.length;
+const onDescTextareaInput = (evt) => {
+    const valueLength = evt.target.value.length;
+    let error = '';
 
-        let error = '';
-        if (valueLength > MAX_DESCRIPTION_LENGTH) {
-            error = `Удалите лишние ${valueLength - MAX_DESCRIPTION_LENGTH} симв.`;
+    if (valueLength > MAX_DESCRIPTION_LENGTH) {
+        error = `Удалите лишние ${valueLength - MAX_DESCRIPTION_LENGTH} симв.`;
+    }
+
+    evt.target.setCustomValidity(error);
+    evt.target.reportValidity();
+};
+
+const onHashtagsInput = (evt) => {
+    const errors = new Set();
+    const uniqueHashtags = new Set();
+
+    const errorAddition = {};
+    errorAddition[VALIDATION_ERROR_KEYS[3]] = null;
+    errorAddition[VALIDATION_ERROR_KEYS[5]] = null;
+
+    for (const hashtag of evt.target.value.split(' ')) {
+        if (hashtag === '') {
+            continue;
         }
 
-        descriptionTextarea.setCustomValidity(error);
-        descriptionTextarea.reportValidity();
-    });
-}
-
-if (hashtagsInput) {
-    hashtagsInput.addEventListener('input', () => {
-        const errors = new Set();
-        const uniqueHashtags = new Set();
-
-        const errorAddition = new Map();
-        errorAddition.set(VALIDATION_ERROR_KEYS[3], null);
-        errorAddition.set(VALIDATION_ERROR_KEYS[5], null);
-
-        for (const hashtag of hashtagsInput.value.split(' ')) {
-            if (hashtag === '') {
-                continue;
-            }
-
-            if (uniqueHashtags.has(hashtag.toLowerCase())) {
-                errors.add(VALIDATION_ERROR_KEYS[4]);
-            } else {
-                uniqueHashtags.add(hashtag);
-            }
-
-            if (hashtag[0] !== '#') {
-                errors.add(VALIDATION_ERROR_KEYS[0]);
-            }
-
-            if (hashtag.length > 1 && !/^#[A-Za-zА-Яа-я0-9]{1,19}$/.test(hashtag)) {
-                errors.add(VALIDATION_ERROR_KEYS[1]);
-            }
-
-            if (hashtag === '#') {
-                errors.add(VALIDATION_ERROR_KEYS[2]);
-            }
-
-            if (hashtag.length > MAX_HASHTAG_LENGTH) {
-                errors.add(VALIDATION_ERROR_KEYS[3]);
-                errorAddition.set(VALIDATION_ERROR_KEYS[3], ` Удалите лишние ${hashtag.length - MAX_HASHTAG_LENGTH} симв.`);
-            }
-
-            if (uniqueHashtags.size > MAX_HASHTAG_COUNT) {
-                errors.add(VALIDATION_ERROR_KEYS[5]);
-                errorAddition.set(VALIDATION_ERROR_KEYS[5], ` Удалите лишние ${uniqueHashtags.size - MAX_HASHTAG_COUNT} хешт.`);
+        for (const validator of VALIDATORS) {
+            const args = [hashtag, uniqueHashtags, errorAddition];
+            if (validator.callback.apply(validator, args)) {
+                errors.add(validator.error);
             }
         }
+    }
 
-        const resultErrors = [];
+    const resultErrors = [];
 
-        for (const error of errors) {
-            if ([VALIDATION_ERROR_KEYS[3], VALIDATION_ERROR_KEYS[5]].includes(error)) {
-                resultErrors.push(error + errorAddition.get(error))
-            } else {
-                resultErrors.push(error);
-            }
+    for (const error of errors) {
+        if ([VALIDATION_ERROR_KEYS[3], VALIDATION_ERROR_KEYS[5]].includes(error)) {
+            resultErrors.push(error + errorAddition[error])
+        } else {
+            resultErrors.push(error);
         }
+    }
 
-        hashtagsInput.setCustomValidity(resultErrors.join('\n'));
-        hashtagsInput.reportValidity();
-    });
-}
+    evt.target.setCustomValidity(resultErrors.join('\n'));
+    evt.target.reportValidity();
+};
+
+export {
+    onDescTextareaInput,
+    onHashtagsInput
+};
