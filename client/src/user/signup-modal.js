@@ -1,4 +1,3 @@
-
 const signupModalElement = document.getElementById('signup-modal');
 const signupModalOpenElement = document.getElementById('signup-btn');
 const signupModalCloseElement = signupModalElement.querySelector('.btn-close');

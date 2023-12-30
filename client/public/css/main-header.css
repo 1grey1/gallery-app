@@ -21,19 +21,13 @@
     color: #000;
 }
 
-.main-header[data-guest="true"] .main-header-nav #guest-menu {
-    display: flex;
-}
-
-.main-header[data-guest="false"] .main-header-nav #guest-menu {
+.main-header-nav #guest-menu,
+.main-header-nav #user-menu {
     display: none;
 }
 
-.main-header[data-guest="true"] .main-header-nav #user-menu {
-    display: none;
-}
-
-.main-header[data-guest="false"] .main-header-nav #user-menu {
+body[data-auth="false"] .main-header-nav #guest-menu,
+body[data-auth="true"] .main-header-nav #user-menu {
     display: flex;
 }
 

@@ -40,3 +40,5 @@ loginModalOpenElement.addEventListener('click', (evt) => {
     evt.preventDefault()
     openLoginModal();
 });
+
+export {closeLoginModal};

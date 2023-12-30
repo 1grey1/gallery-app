@@ -13,7 +13,7 @@ const setSignupFormSubmit = (onSuccess, onFail) => {
         window.setTimeout(() => {
             createUser(formData, onSuccess, (errors, SIGNUP_FIELDS, signupFormElement) => {
                 onFail(errors, SIGNUP_FIELDS, signupFormElement);
-                unblockButton(submitBtnElement, 'Зарегистрироваться');
+                unblockButton(submitBtnElement);
             });
         }, 2000);
     });

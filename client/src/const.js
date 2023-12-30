@@ -80,9 +80,33 @@ const EFFECTS = [
     }
 ];
 
+const scheme = 'http';
+const host = 'localhost';
+const port = '80';
+
+const Url = {
+    USER: {
+        POST: `${scheme}://${host}:${port}/user`
+    },
+    ACCESS_TOKEN: {
+        POST: `${scheme}://${host}:${port}/token`,
+        DELETE: `${scheme}://${host}:${port}/logout/`
+    },
+    UPLOAD: {
+        AVATAR: `${scheme}://${host}:${port}/uploads/avatars/`
+    }
+};
+
+const Storage = {
+    ACCESS_TOKEN: `gallary_${btoa('token')}`
+}
+
 export {
-    PICTURE_DESRIPTIONS,
+    Url,
+    Storage,
+    EFFECTS,
     USER_NAMES,
     COMMENT_MESSAGES,
-    EFFECTS
+    PICTURE_DESRIPTIONS,
 };
+
