@@ -16,7 +16,6 @@ const createUser = (body, onSuccess, onFail) => {
         } else {
             const errors = JSON.parse(xhr.response);
             onFail(errors, SIGNUP_FIELDS, signupFormElement);
-            console.log(errors);
         }
     });
 
@@ -50,9 +49,20 @@ const createToken = (body, onSuccess, onFail) => {
 }
 
 const deleteToken = (token, tokenId, onSuccess) => {
-    // xhr.setRequestHeader('Authorization', `Basic ${btoa(token + ':')}`); сдулать это сразу послу const xhr = new XMLHttpRequest();
-    // статус в случае успеха === 204
-    // метод будет DELETE
+    const xhr = new XMLHttpRequest();
+    xhr.open('DELETE', `${Url.ACCESS_TOKEN.DELETE}${tokenId}`);
+    xhr.setRequestHeader('Authorization', `Basic ${btoa(token + ':')}`);
+
+    // FIXME:
+    if (xhr.status === 0) { 
+        onSuccess();
+    }
+
+    xhr.send();
 }
 
-export {createUser, createToken};
+export {
+    createUser,
+    createToken,
+    deleteToken
+};

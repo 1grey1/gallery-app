@@ -1,3 +1,4 @@
+const nameElement = document.querySelector('title');
 const loginModalElement = document.getElementById('login-modal');
 const loginModalOpenElement = document.getElementById('login-btn');
 const loginModalCloseElement = loginModalElement.querySelector('.btn-close');
@@ -18,6 +19,7 @@ const openLoginModal = () => {
     window.setTimeout(() => {
         loginModalElement.classList.add('show');
         document.body.classList.add('modal-open');
+        nameElement.textContent = 'WebdotApp-1 | Вход';
     
         loginModalCloseElement.addEventListener('click', closeLoginModal);
         document.addEventListener('keydown', onModalEscKeydown);
@@ -30,6 +32,7 @@ const closeLoginModal = () => {
         document.querySelectorAll('.modal-backdrop').forEach((bd) => bd.remove());
         loginModalElement.style.display = 'none';
         document.body.classList.remove('modal-open');
+        nameElement.textContent = 'WebdotApp-1';
     
         loginModalCloseElement.removeEventListener('click', closeLoginModal);
         document.removeEventListener('keydown', onModalEscKeydown);

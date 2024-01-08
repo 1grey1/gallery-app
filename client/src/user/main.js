@@ -1,9 +1,10 @@
+import {renderValidationErrors} from './validation.js';
 import {setSignupFormSubmit} from './signup-form.js';
 import {setLoginFormSubmit} from './login-form.js';
 import {closeSignupModal} from './signup-modal.js';
+import {updatePageHeader} from './page-header.js';
 import {closeLoginModal} from './login-modal.js';
-import {renderValidationErrors} from './validation.js';
-import {updatePageHeader} from './page_header.js';
+import {setLogoutBtnClick} from './logout.js';
 import {Storage} from '../const.js';
 
 setLoginFormSubmit(
@@ -19,3 +20,8 @@ setSignupFormSubmit(
     closeSignupModal,
     renderValidationErrors
 );
+
+setLogoutBtnClick(() => {
+    localStorage.removeItem(Storage.ACCESS_TOKEN);
+    updatePageHeader();
+});

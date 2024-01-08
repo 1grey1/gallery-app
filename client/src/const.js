@@ -92,6 +92,9 @@ const Url = {
         POST: `${scheme}://${host}:${port}/token`,
         DELETE: `${scheme}://${host}:${port}/logout/`
     },
+    EFFECT: {
+        GET: `${scheme}://${host}:${port}/effect`
+    },
     UPLOAD: {
         AVATAR: `${scheme}://${host}:${port}/uploads/avatars/`
     }

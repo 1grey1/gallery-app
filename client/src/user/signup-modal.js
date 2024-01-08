@@ -1,3 +1,4 @@
+const nameElement = document.querySelector('title');
 const signupModalElement = document.getElementById('signup-modal');
 const signupModalOpenElement = document.getElementById('signup-btn');
 const signupModalCloseElement = signupModalElement.querySelector('.btn-close');
@@ -18,6 +19,7 @@ const openSignupModal = () => {
     window.setTimeout(() => {
         signupModalElement.classList.add('show');
         document.body.classList.add('modal-open');
+        nameElement.textContent = 'WebdotApp-1 | Регистрация';
     
         signupModalCloseElement.addEventListener('click', closeSignupModal);
         document.addEventListener('keydown', onModalEscKeydown);
@@ -30,6 +32,7 @@ const closeSignupModal = () => {
         document.querySelectorAll('.modal-backdrop').forEach((bd) => bd.remove());
         signupModalElement.style.display = 'none';
         document.body.classList.remove('modal-open');
+        nameElement.textContent = 'WebdotApp-1';
     
         signupModalCloseElement.removeEventListener('click', closeSignupModal);
         document.removeEventListener('keydown', onModalEscKeydown);
