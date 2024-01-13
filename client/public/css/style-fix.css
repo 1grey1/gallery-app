@@ -106,3 +106,9 @@ label[for=upload-file]:hover {
     -ms-transform: translateX(-50%);
     transform: translateX(-50%);
 }
+
+#upload-submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}

@@ -4,7 +4,7 @@ const scaleControlBiggerElement = uploadModalElement.querySelector('.scale__cont
 const scaleControlSmallerElement = uploadModalElement.querySelector('.scale__control--smaller');
 const previewImgElement = uploadModalElement.querySelector('.img-upload__preview img');
 
-const SCALE_CONTROL_MAX_VALUE = 200;
+const SCALE_CONTROL_MAX_VALUE = 100;
 const SCALE_CONTROL_MIN_VALUE = 25;
 const SCALE_CONTROL_STEP = 25;
 

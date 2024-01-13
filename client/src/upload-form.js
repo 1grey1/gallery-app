@@ -1,6 +1,10 @@
 import {VALIDATION_ERROR_KEYS, VALIDATORS} from './validation.js';
+import {blockButton, unblockButton} from './user/util.js';
+import {Storage} from './const.js';
 
 const MAX_DESCRIPTION_LENGTH = 400;
+const uploadFormElement = document.querySelector('#upload-select-image');
+const submitBtnElement = uploadFormElement.querySelector('[type=submit]');
 
 const onDescTextareaInput = (evt) => {
     const valueLength = evt.target.value.length;
@@ -49,7 +53,31 @@ const onHashtagsInput = (evt) => {
     evt.target.reportValidity();
 };
 
+const setUploadFormSabmit = (onSuccess, onFail) => {
+    uploadFormElement.addEventListener('submit', (evt) => {
+        evt.preventDefault();
+
+        if (!localStorage.getItem(Storage.ACCESS_TOKEN)) {
+            return;
+        }
+
+        const {user} = JSON.parse(localStorage.getItem(Storage.ACCESS_TOKEN));
+
+        const formData = new FormData(uploadFormElement);
+        formData.set('user_id', user.id);
+
+        blockButton(submitBtnElement, 'Публикация');
+        window.setTimeout(() => {
+            for (const item of formData) {
+                console.log(item);
+            }
+            unblockButton(submitBtnElement);
+        }, 2000);
+    })
+};
+
 export {
     onDescTextareaInput,
-    onHashtagsInput
+    onHashtagsInput,
+    setUploadFormSabmit
 };

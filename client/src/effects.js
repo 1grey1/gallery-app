@@ -1,5 +1,6 @@
-import {EFFECTS} from './const.js';
+import {Storage} from './const.js';
 
+const EFFECTS = JSON.parse(localStorage.getItem(Storage.EFFECTS));
 const effectLevelElement = document.querySelector('.effect-level')
 const effectLevelSliderElement = effectLevelElement.querySelector('.effect-level__slider');
 const effectLevelValueElement = effectLevelElement.querySelector('.effect-level__value');

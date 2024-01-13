@@ -23,93 +23,47 @@ const COMMENT_MESSAGES = [
     'message-5'
 ];
 
-const EFFECTS = [
-    {
-        name: 'none',
-        css_filter: null,
-        range_min: null,
-        range_max: null,
-        step: null,
-        start: null,
-        unit: null
-    },
-    {
-        name: 'chrome',
-        css_filter: 'grayscale',
-        range_min: 0,
-        range_max: 1,
-        step: 0.1,
-        start: 1,
-        unit: null
-    },
-    {
-        name: 'sepia',
-        css_filter: 'sepia',
-        range_min: 0,
-        range_max: 1,
-        step: 0.1,
-        start: 1,
-        unit: null
-    },
-    {
-        name: 'marvin',
-        css_filter: 'invert',
-        range_min: 0,
-        range_max: 100,
-        step: 1,
-        start: 100,
-        unit: '%'
-    },
-    {
-        name: 'phobos',
-        css_filter: 'blur',
-        range_min: 0,
-        range_max: 3,
-        step: 0.1,
-        start: 3,
-        unit: 'px'
-    },
-    {
-        name: 'heat',
-        css_filter: 'brightness',
-        range_min: 1,
-        range_max: 3,
-        step: 0.1,
-        start: 3,
-        unit: null
-    }
-];
-
 const scheme = 'http';
 const host = 'localhost';
 const port = '80';
 
 const Url = {
-    USER: {
-        POST: `${scheme}://${host}:${port}/user`
-    },
     ACCESS_TOKEN: {
         POST: `${scheme}://${host}:${port}/token`,
         DELETE: `${scheme}://${host}:${port}/logout/`
     },
+    COMMENT: {
+        POST: null,
+    },
     EFFECT: {
         GET: `${scheme}://${host}:${port}/effect`
     },
+    LIKE: {
+        POST: null,
+        DELETE: null
+    },
+    PICTURE: {
+        GET: null,
+        POST: `${scheme}://${host}:${port}/picture`
+    },
+    USER: {
+        POST: `${scheme}://${host}:${port}/user`
+    },
     UPLOAD: {
-        AVATAR: `${scheme}://${host}:${port}/uploads/avatars/`
+        AVATAR: `${scheme}://${host}:${port}/uploads/avatars/`,
+        PICTURE: `${scheme}://${host}:${port}/uploads/pictures/`
     }
 };
 
 const Storage = {
-    ACCESS_TOKEN: `gallary_${btoa('token')}`
+    ACCESS_TOKEN: `gallery_${btoa('token')}`,
+    EFFECTS: `gallery_${btoa('effects')}`
 }
 
 export {
     Url,
     Storage,
-    EFFECTS,
     USER_NAMES,
     COMMENT_MESSAGES,
     PICTURE_DESRIPTIONS,
 };
-

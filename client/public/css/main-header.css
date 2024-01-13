@@ -68,6 +68,9 @@ body[data-auth="true"] .main-header-nav #user-menu {
 
 .main-header .main-header-nav #user-menu li #logout-btn {
     align-self: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
 }
 
