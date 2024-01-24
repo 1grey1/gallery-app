@@ -1,5 +1,11 @@
-import {PICTURE_DESRIPTIONS, USER_NAMES, COMMENT_MESSAGES} from './const.js';
 import {getRandomInt, getRandomArrayElement} from './util.js';
+
+const USER_NAMES = [
+];
+const COMMENT_MESSAGES = [
+];
+const PICTURE_DESRIPTIONS = [
+];
 
 const MAX_COMMENT_COUNT = 20;
 const MAX_LIKE_COUNT = 200;

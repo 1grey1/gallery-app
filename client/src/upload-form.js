@@ -1,12 +1,19 @@
 import {VALIDATION_ERROR_KEYS, VALIDATORS} from './validation.js';
 import {blockButton, unblockButton} from './user/util.js';
-import {Storage} from './const.js';
+import {sendData} from './api.js';
+import {AppStorage, Url} from './const.js';
 
 const MAX_DESCRIPTION_LENGTH = 400;
 const uploadFormElement = document.querySelector('#upload-select-image');
 const submitBtnElement = uploadFormElement.querySelector('[type=submit]');
 
+/**
+ * Обработчик события INPUT к полю описания публикации
+ * @param {InputEvent} evt Объект события
+ * @return {undefined}
+ */
 const onDescTextareaInput = (evt) => {
+    console.log(evt);
     const valueLength = evt.target.value.length;
     let error = '';
 
@@ -57,11 +64,11 @@ const setUploadFormSabmit = (onSuccess, onFail) => {
     uploadFormElement.addEventListener('submit', (evt) => {
         evt.preventDefault();
 
-        if (!localStorage.getItem(Storage.ACCESS_TOKEN)) {
+        if (!localStorage.getItem(AppStorage.ACCESS_TOKEN)) {
             return;
         }
 
-        const {user} = JSON.parse(localStorage.getItem(Storage.ACCESS_TOKEN));
+        const {user} = JSON.parse(localStorage.getItem(AppStorage.ACCESS_TOKEN));
 
         const formData = new FormData(uploadFormElement);
         formData.set('user_id', user.id);
@@ -71,7 +78,16 @@ const setUploadFormSabmit = (onSuccess, onFail) => {
             for (const item of formData) {
                 console.log(item);
             }
-            unblockButton(submitBtnElement);
+            sendData(
+                Url.PICTURE.POST,
+                () => {
+                    unblockButton(submitBtnElement);
+                    onSuccess();
+                },
+                () => {},
+                formData
+            );
+            
         }, 2000);
     })
 };

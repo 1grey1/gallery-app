@@ -1,6 +1,6 @@
-import {Storage} from './const.js';
+import {AppStorage} from './const.js';
 
-const EFFECTS = JSON.parse(localStorage.getItem(Storage.EFFECTS));
+const EFFECTS = JSON.parse(localStorage.getItem(AppStorage.EFFECTS));
 const effectLevelElement = document.querySelector('.effect-level')
 const effectLevelSliderElement = effectLevelElement.querySelector('.effect-level__slider');
 const effectLevelValueElement = effectLevelElement.querySelector('.effect-level__value');
@@ -32,6 +32,10 @@ if (noUiSlider) {
 }
 
 const onSliderUpdate = (_, handle, unencoded) => {
+    if (!localStorage.getItem(AppStorage.ACCESS_TOKEN)) {
+        return;
+    }
+
     const effectName = document.querySelector('[name=effect_id]:checked').getAttribute('id').split('-')[1];
     const effect = EFFECTS.find(effect => effect.name === effectName);
 
@@ -43,6 +47,10 @@ const onSliderUpdate = (_, handle, unencoded) => {
 }
 
 const onEffectsRadioChange = (evt) => {
+    if (!localStorage.getItem(AppStorage.ACCESS_TOKEN)) {
+        return;
+    }
+
     const effectName = evt.target.getAttribute('id').split('-')[1];
     const effect = EFFECTS.find(effect => effect.name === effectName);
 

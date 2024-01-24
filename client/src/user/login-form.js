@@ -1,3 +1,4 @@
+// import {renderEffectsList} from '../effect-list.js';
 import {createToken} from './user-api.js';
 import {blockButton, unblockButton} from './util.js';
 
@@ -17,6 +18,8 @@ const setLoginFormSubmit = (onSuccess, onFail) => {
             });
         }, 2000);
     });
+
+    // renderEffectsList();
 }
 
 export {setLoginFormSubmit};

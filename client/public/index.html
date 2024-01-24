@@ -98,6 +98,7 @@
                                 class="img-upload__input visually-hidden"
                                 type="file"
                                 name="filename"
+                                accept=".jpg, .jpeg, .png"
                                 required
                             >
                             <label class="img-upload__label img-upload__control" for="upload-file"><i class="fa-solid fa-upload"></i></label>
@@ -398,7 +399,14 @@
     <!-- Шаблон изображения случайного пользователя -->
     <template id="picture">
         <a href="#" class="picture">
-            <img class="picture__img" src="./photos/1.jpg" width="182" height="182" alt="">
+            <img
+                class="picture__img"
+                src="./photos/1.jpg"
+                width="182"
+                height="182"
+                alt=""
+                style="width: 182px; height: 182px; object-fit: cover; object-position: center;"
+            >
             <p class="picture__info">
                 <span class="picture__comments"></span>
                 <span class="picture__likes"></span>

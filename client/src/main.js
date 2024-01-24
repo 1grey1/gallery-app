@@ -1,15 +1,24 @@
 import {renderPicturesList} from './picture-list.js';
+import {closeUploadModal} from './upload-modal.js';
 import {renderEffectsList} from './effect-list.js';
 import {setUploadFormSabmit} from './upload-form.js';
-import {generatePictures} from './data.js';
+import {Url} from './const.js';
 import {start} from './start.js';
 import './upload-modal.js';
 import './user/main.js';
+import {getData} from './api.js';
 
 start();
 
-const pictures = generatePictures(54);
-renderPicturesList(pictures);
+getData(Url.PICTURE.GET, (response) => {
+    const pictures = JSON.parse(response);
+    renderPicturesList(pictures);
+});
+
 renderEffectsList();
 
-setUploadFormSabmit();
+setUploadFormSabmit(
+    () => {
+        closeUploadModal();
+    }
+);

@@ -98,3 +98,5 @@ uploadModalOpenElement.addEventListener('change', () => {
     const file = uploadModalOpenElement.files[0];
     openUploadModal(file);
 });
+
+export {closeUploadModal};

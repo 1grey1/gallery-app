@@ -5,12 +5,12 @@ import {closeSignupModal} from './signup-modal.js';
 import {updatePageHeader} from './page-header.js';
 import {closeLoginModal} from './login-modal.js';
 import {setLogoutBtnClick} from './logout.js';
-import {Storage} from '../const.js';
+import {AppStorage} from '../const.js';
 
 setLoginFormSubmit(
     (token) => {
         closeLoginModal();
-        localStorage.setItem(Storage.ACCESS_TOKEN, JSON.stringify(token));
+        localStorage.setItem(AppStorage.ACCESS_TOKEN, JSON.stringify(token));
         updatePageHeader();
     }, 
     renderValidationErrors
@@ -22,6 +22,6 @@ setSignupFormSubmit(
 );
 
 setLogoutBtnClick(() => {
-    localStorage.removeItem(Storage.ACCESS_TOKEN);
+    localStorage.removeItem(AppStorage.ACCESS_TOKEN);
     updatePageHeader();
 });

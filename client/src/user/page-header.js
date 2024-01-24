@@ -1,10 +1,10 @@
-import {Storage, Url} from '../const.js';
+import {AppStorage, Url} from '../const.js';
 
 const userAvatarElement = document.querySelector('.wd-user-avatar');
 const userNameElement = document.getElementById('username');
 
 const updatePageHeader = () => {
-    const accessToken = localStorage.getItem(Storage.ACCESS_TOKEN);
+    const accessToken = localStorage.getItem(AppStorage.ACCESS_TOKEN);
     document.body.dataset.auth = Boolean(accessToken);
 
     if (accessToken) {
