@@ -1,5 +1,119 @@
 /******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
+
+/***/ "./src/api.js":
+/*!********************!*\
+  !*** ./src/api.js ***!
+  \********************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   getData: () => (/* binding */ getData),
+/* harmony export */   sendData: () => (/* binding */ sendData)
+/* harmony export */ });
+/* harmony import */ var _const_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./const.js */ "./src/const.js");
+
+
+const getToken = () => {
+    if (!localStorage.getItem(_const_js__WEBPACK_IMPORTED_MODULE_0__.AppStorage.ACCESS_TOKEN)){
+        return;
+    }
+
+    return JSON.parse(localStorage.getItem(_const_js__WEBPACK_IMPORTED_MODULE_0__.AppStorage.ACCESS_TOKEN)).token;
+}
+
+const getData = (url, onSuccess, onFail) => {
+    const token = getToken();
+
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', url);
+    xhr.setRequestHeader('Authorization', `Basic ${btoa(token + ':')}`);
+
+    xhr.addEventListener('load', () => {
+        if (xhr.status === 200) {
+            onSuccess(xhr.response);
+        }
+    });
+
+    xhr.send();
+}
+
+const sendData = (url, onSuccess, onFail, body) => {
+    const token = getToken();
+
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', url);
+    xhr.setRequestHeader('Authorization', `Basic ${btoa(token + ':')}`);
+
+    xhr.addEventListener('load', () => {
+        if (xhr.status === 201) {
+            onSuccess();
+        }
+    });
+
+    xhr.send(body);
+}
+
+
+
+
+/***/ }),
+
+/***/ "./src/comment-form.js":
+/*!*****************************!*\
+  !*** ./src/comment-form.js ***!
+  \*****************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   setCommentFormSabmit: () => (/* binding */ setCommentFormSabmit)
+/* harmony export */ });
+/* harmony import */ var _user_util_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./user/util.js */ "./src/user/util.js");
+/* harmony import */ var _api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./api.js */ "./src/api.js");
+/* harmony import */ var _const_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./const.js */ "./src/const.js");
+
+
+
+
+const commentFormElement = document.querySelector('#comment-form');
+const  submitBtnElement = commentFormElement.querySelector('[type=submit]');
+
+const setCommentFormSabmit = (onSuccess, onFail) => {
+    commentFormElement.addEventListener('submit', (evt) => {
+        evt.preventDefault();
+
+        if (!localStorage.getItem(_const_js__WEBPACK_IMPORTED_MODULE_2__.AppStorage.ACCESS_TOKEN)) {
+            return;
+        }
+
+        const {user} = JSON.parse(localStorage.getItem(_const_js__WEBPACK_IMPORTED_MODULE_2__.AppStorage.ACCESS_TOKEN));
+
+        const formData = new FormData(commentFormElement);
+        formData.set('user_id', user.id);
+
+        (0,_user_util_js__WEBPACK_IMPORTED_MODULE_0__.blockButton)(submitBtnElement, 'Отправка');
+        window.setTimeout(() => {
+            (0,_api_js__WEBPACK_IMPORTED_MODULE_1__.sendData)(
+                _const_js__WEBPACK_IMPORTED_MODULE_2__.Url.COMMENT.POST,
+                () => {
+                    (0,_user_util_js__WEBPACK_IMPORTED_MODULE_0__.unblockButton)(submitBtnElement);
+                    onSuccess();
+                },
+                () => {},
+                formData
+            );
+        }, 2000);
+        console.log(1);
+    });
+};
+
+
+
+
+/***/ }),
 
 /***/ "./src/comment-list.js":
 /*!*****************************!*\
@@ -7,7 +121,6 @@
   \*****************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   renderCommentList: () => (/* binding */ renderCommentList)
@@ -40,10 +153,10 @@ const setLoaderClick = function (comments) {
 }
 
 const renderComments = (comments, from, to) => {
-    for (const comment of comments.slice(from, to)) {
+    for (const {message, user} of comments.slice(from, to)) {
         const commentElement = commentTemlate.cloneNode(true);
-        commentElement.querySelector('.social__text').textContent = comment.message;
-        commentElement.querySelector('.social__picture').setAttribute('src', comment.user.avatar);
+        commentElement.querySelector('.social__text').textContent = message;
+        commentElement.querySelector('.social__picture').setAttribute('src', user.avatar);
         commentListElement.append(commentElement);
         renderedCommentCountElement.textContent = String((+renderedCommentCountElement.textContent) + 1);
     }
@@ -78,137 +191,60 @@ const renderCommentList = (comments) => {
   \**********************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   COMMENT_MESSAGES: () => (/* binding */ COMMENT_MESSAGES),
-/* harmony export */   EFFECTS: () => (/* binding */ EFFECTS),
-/* harmony export */   PICTURE_DESRIPTIONS: () => (/* binding */ PICTURE_DESRIPTIONS),
-/* harmony export */   USER_NAMES: () => (/* binding */ USER_NAMES)
+/* harmony export */   AppStorage: () => (/* binding */ AppStorage),
+/* harmony export */   Url: () => (/* binding */ Url)
 /* harmony export */ });
-const PICTURE_DESRIPTIONS = [
-    'desription-1',
-    'desription-2',
-    'desription-3',
-    'desription-4',
-    'desription-5'
-];
+const scheme = 'http';
+const host = 'localhost';
+const port = '80';
 
-const USER_NAMES = [
-    'name-1',
-    'name-2',
-    'name-3',
-    'name-4',
-    'name-5',
-    'name-6'
-];
+const Url = {
+    ACCESS_TOKEN: {
+        POST: `${scheme}://${host}:${port}/token`,
+        DELETE: `${scheme}://${host}:${port}/logout/`
+    },
+    COMMENT: {
+        GET: `${scheme}://${host}:${port}/comment`,
+        POST: `${scheme}://${host}:${port}/comment`
+    },
+    EFFECT: {
+        GET: `${scheme}://${host}:${port}/effect`
+    },
+    LIKE: {
+        POST: null,
+        DELETE: null
+    },
+    PICTURE: {
+        GET: `${scheme}://${host}:${port}/picture`,
+        POST: `${scheme}://${host}:${port}/picture`
+    },
+    USER: {
+        POST: `${scheme}://${host}:${port}/user`
+    },
+    UPLOAD: {
+        AVATAR: `${scheme}://${host}:${port}/uploads/avatars/`,
+        PICTURE: `${scheme}://${host}:${port}/uploads/pictures/`
+    }
+};
 
-const COMMENT_MESSAGES = [
-    'message-1',
-    'message-2',
-    'message-3',
-    'message-4',
-    'message-5'
-];
-
-const EFFECTS = [
-    'none',
-    'chrome',
-    'sepia',
-    'marvin',
-    'phobos',
-    'heat'
-];
+const AppStorage = {
+    ACCESS_TOKEN: `gallery_${btoa('token')}`,
+    EFFECTS: `gallery_${btoa('effects')}`
+}
 
 
 
 
 /***/ }),
 
-/***/ "./src/data.js":
-/*!*********************!*\
-  !*** ./src/data.js ***!
-  \*********************/
+/***/ "./src/effect-list.js":
+/*!****************************!*\
+  !*** ./src/effect-list.js ***!
+  \****************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   generatePictures: () => (/* binding */ generatePictures)
-/* harmony export */ });
-/* harmony import */ var _const_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./const.js */ "./src/const.js");
-/* harmony import */ var _util_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./util.js */ "./src/util.js");
-
-
-
-const MAX_COMMENT_COUNT = 20;
-const MAX_LIKE_COUNT = 200;
-
-const usedComentIds = [];
-const usedPictureIds = [];
-
-const generateUser = () => ({
-    id: (0,_util_js__WEBPACK_IMPORTED_MODULE_1__.getRandomInt)(1, 6),
-    name: (0,_util_js__WEBPACK_IMPORTED_MODULE_1__.getRandomArrayElement)(_const_js__WEBPACK_IMPORTED_MODULE_0__.USER_NAMES),
-    avatar: `./img/avatars/1600w-WsQ560IKaR0.webp`
-});
-
-const generateComment = (maxPictureId) => {
-    let comentId;
-    do {
-        comentId = (0,_util_js__WEBPACK_IMPORTED_MODULE_1__.getRandomInt)(1, maxPictureId * MAX_COMMENT_COUNT);
-    } while (usedComentIds.includes(comentId));
-    usedComentIds.push(comentId);
-
-    return {
-        id: comentId,
-        message: (0,_util_js__WEBPACK_IMPORTED_MODULE_1__.getRandomArrayElement)(_const_js__WEBPACK_IMPORTED_MODULE_0__.COMMENT_MESSAGES),
-        user: generateUser()
-    }
-};
-
-const generatePicture = (maxPictureId) => {
-    let picturesId;
-    do {
-        picturesId = (0,_util_js__WEBPACK_IMPORTED_MODULE_1__.getRandomInt)(1, maxPictureId);
-    } while (usedPictureIds.includes(picturesId));
-    usedPictureIds.push(picturesId);
-
-    const comments = [];
-    for (let i = 0; i < (0,_util_js__WEBPACK_IMPORTED_MODULE_1__.getRandomInt)(5, MAX_COMMENT_COUNT); i++) {
-        comments.push(generateComment(maxPictureId));
-    }
-
-    return {
-        id: picturesId,
-        url: `./photos/${(0,_util_js__WEBPACK_IMPORTED_MODULE_1__.getRandomInt)(1, 25)}.jpg`,
-        description: (0,_util_js__WEBPACK_IMPORTED_MODULE_1__.getRandomArrayElement)(_const_js__WEBPACK_IMPORTED_MODULE_0__.PICTURE_DESRIPTIONS),
-        likes: (0,_util_js__WEBPACK_IMPORTED_MODULE_1__.getRandomInt)(0, MAX_LIKE_COUNT),
-        comments: comments
-    }
-};
-
-const generatePictures = (count) => {
-    const pictures = [];
-    for (let i = 0; i < count; i++) {
-        pictures.push(generatePicture(count));
-    }
-
-    return pictures;
-};
-
-
-
-
-/***/ }),
-
-/***/ "./src/effects-list.js":
-/*!*****************************!*\
-  !*** ./src/effects-list.js ***!
-  \*****************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   renderEffectsList: () => (/* binding */ renderEffectsList)
@@ -216,29 +252,123 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _const_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./const.js */ "./src/const.js");
 
 
-const previewImgElement = document.querySelector('.img-upload__preview img');
+const EFFECTS = JSON.parse(localStorage.getItem(_const_js__WEBPACK_IMPORTED_MODULE_0__.AppStorage.EFFECTS));
 const effectListElement = document.querySelector('.effects__list');
 const effectTemlate = document.getElementById('effect-item')
     .content
     .querySelector('.effects__item');
 
-const  renderEffectsList = () => {
-    for (const effect of _const_js__WEBPACK_IMPORTED_MODULE_0__.EFFECTS) {
+const renderEffectsList = () => {
+    if (!localStorage.getItem(_const_js__WEBPACK_IMPORTED_MODULE_0__.AppStorage.ACCESS_TOKEN)) {
+        return;
+    }
+
+    for (const {name: effectName, id: effectId} of EFFECTS) {
         const effectElement = effectTemlate.cloneNode(true);
 
-        if (effect === 'none') {
+        if (effectName === 'none') {
             effectElement.querySelector('.effects__radio').setAttribute('checked', '');
         }
 
-        effectElement.querySelector('.effects__radio').setAttribute('id', `effect-${effect}`);
-        effectElement.querySelector('.effects__label').setAttribute('for', `effect-${effect}`);
-        effectElement.querySelector('.effects__preview').classList.add(`effects__preview--${effect}`);
+        effectElement.querySelector('.effects__radio').setAttribute('id', `effect-${effectName}`);
+        effectElement.querySelector('.effects__label').setAttribute('for', `effect-${effectName}`);
+        effectElement.querySelector('.effects__radio').setAttribute('value', effectId);
+        effectElement.querySelector('.effects__preview').classList.add(`effects__preview--${effectName}`);
         effectListElement.append(effectElement);
+    }
+};
 
-        effectElement.addEventListener('click', () => {
-            previewImgElement.setAttribute('class', '');
-            previewImgElement.classList.add('class', `effects__preview--${effect}`);
-        });
+
+
+
+/***/ }),
+
+/***/ "./src/effects.js":
+/*!************************!*\
+  !*** ./src/effects.js ***!
+  \************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   onEffectsRadioChange: () => (/* binding */ onEffectsRadioChange),
+/* harmony export */   onSliderUpdate: () => (/* binding */ onSliderUpdate)
+/* harmony export */ });
+/* harmony import */ var _const_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./const.js */ "./src/const.js");
+
+
+const EFFECTS = JSON.parse(localStorage.getItem(_const_js__WEBPACK_IMPORTED_MODULE_0__.AppStorage.EFFECTS));
+const effectLevelElement = document.querySelector('.effect-level')
+const effectLevelSliderElement = effectLevelElement.querySelector('.effect-level__slider');
+const effectLevelValueElement = effectLevelElement.querySelector('.effect-level__value');
+const previewImgElement = document.querySelector('.img-upload__preview img');
+
+const NONE_EFFECT_KEY = 'none';
+
+if (noUiSlider) {
+    noUiSlider.create(effectLevelSliderElement, {
+        range: {
+            min: 0,
+            max: 100
+        },
+        start: 50,
+        step: 1,
+        connect: 'lower',
+        format: {
+            to: function (value) {
+                if (Number.isInteger(value)) {
+                    return value.toFixed(0);
+                }
+                return value.toFixed(1);
+            },
+            from: function (value) {
+                return parseFloat(value);
+            }
+        }
+    });
+}
+
+const onSliderUpdate = (_, handle, unencoded) => {
+    if (!localStorage.getItem(_const_js__WEBPACK_IMPORTED_MODULE_0__.AppStorage.ACCESS_TOKEN)) {
+        return;
+    }
+
+    const effectName = document.querySelector('[name=effect_id]:checked').getAttribute('id').split('-')[1];
+    const effect = EFFECTS.find(effect => effect.name === effectName);
+
+    if (effectName !== NONE_EFFECT_KEY) {
+        const filterValue = `${effect.css_filter}(${unencoded[handle] + (effect.unit ?? '')})`;
+        effectLevelValueElement.setAttribute('value', unencoded[handle]);
+        previewImgElement.style.filter = filterValue;
+    }
+}
+
+const onEffectsRadioChange = (evt) => {
+    if (!localStorage.getItem(_const_js__WEBPACK_IMPORTED_MODULE_0__.AppStorage.ACCESS_TOKEN)) {
+        return;
+    }
+
+    const effectName = evt.target.getAttribute('id').split('-')[1];
+    const effect = EFFECTS.find(effect => effect.name === effectName);
+
+    previewImgElement.setAttribute('class', '');
+    previewImgElement.classList.add('class', `effects__preview--${effectName}`);
+
+    if (effect.name !== NONE_EFFECT_KEY) {
+        const options = {
+            range: {
+                min: effect.range_min,
+                max: effect.range_max
+            },
+            step: effect.step
+        };
+        effectLevelElement.classList.remove('hidden');
+        effectLevelSliderElement.noUiSlider.updateOptions(options);
+        effectLevelSliderElement.noUiSlider.set(effect.start);
+    } else {
+        effectLevelElement.classList.add('hidden');
+        effectLevelValueElement.setAttribute('value', '');
+        previewImgElement.style.filter = 'unset';
     }
 }
 
@@ -247,13 +377,12 @@ const  renderEffectsList = () => {
 
 /***/ }),
 
-/***/ "./src/pictures-list.js":
-/*!******************************!*\
-  !*** ./src/pictures-list.js ***!
-  \******************************/
+/***/ "./src/picture-list.js":
+/*!*****************************!*\
+  !*** ./src/picture-list.js ***!
+  \*****************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   renderPicturesList: () => (/* binding */ renderPicturesList)
@@ -261,31 +390,29 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _preview_modal_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./preview-modal.js */ "./src/preview-modal.js");
 
 
-// const pictureTemplateElement = document.getElementById('picture');
-// const pictureTemplateContent = pictureTemplateElement.content;
-// const pictureTemplate = pictureTemplateContent.querySelector('.picture');
-
 const pictureListElement = document.querySelector('.pictures');
 const pictureTemplate = document.getElementById('picture')
     .content
     .querySelector('.picture');
 
 const renderPicturesList = (pictures) => {
-    for (const picture of pictures) {
+    for (const {id, url, likes, comments} of pictures) {
         const pictureElement = pictureTemplate.cloneNode(true);
 
-        // const pictureImgElement = pictureElement.querySelector('.picture__img');
-        // pictureImgElement.setAttribute('src', picture.url);
-
-        pictureElement.querySelector('.picture__img').setAttribute('src', picture.url);
-        pictureElement.querySelector('.picture__likes').textContent = picture.likes;
-        pictureElement.querySelector('.picture__comments').textContent = picture.comments.length;
+        pictureElement.dataset.id = id;
+        pictureElement.querySelector('.picture__img').setAttribute('src', `http://localhost:80/uploads/pictures/${url}`);
+        pictureElement.querySelector('.picture__likes').textContent = likes;
+        pictureElement.querySelector('.picture__comments').textContent = comments.length;
         pictureListElement.append(pictureElement);
-
-        pictureElement.addEventListener('click', function () {
-            (0,_preview_modal_js__WEBPACK_IMPORTED_MODULE_0__.openPreviewModal)(picture);
-        });
     }
+
+    pictureListElement.addEventListener('click', (evt) => {
+        const pictureElement = evt.target.closest('.picture');
+        if (pictureElement) {
+            const picture = pictures.find(picture => picture.id === +pictureElement.dataset.id);
+            (0,_preview_modal_js__WEBPACK_IMPORTED_MODULE_0__.openPreviewModal)(picture);
+        }
+    });
 }
 
 
@@ -299,7 +426,6 @@ const renderPicturesList = (pictures) => {
   \******************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   openPreviewModal: () => (/* binding */ openPreviewModal)
@@ -321,7 +447,7 @@ const onModalEscKeydown = (evt) => {
 };
 
 const openPreviewModal = (picture) => {
-    previewModalImgElement.setAttribute('src', picture.url);
+    previewModalImgElement.setAttribute('src', `http://localhost:80/uploads/pictures/${picture.url}`);
     previewModalLikesElement.textContent = picture.likes;
     totalCommentCountElement.textContent = picture.comments.length;
     previewModalDescElement.textContent = picture.description;
@@ -344,65 +470,150 @@ const closePreviewModal = () => {
 
 /***/ }),
 
+/***/ "./src/start.js":
+/*!**********************!*\
+  !*** ./src/start.js ***!
+  \**********************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   restart: () => (/* binding */ restart),
+/* harmony export */   start: () => (/* binding */ start)
+/* harmony export */ });
+/* harmony import */ var _user_page_header_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./user/page-header.js */ "./src/user/page-header.js");
+/* harmony import */ var _api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./api.js */ "./src/api.js");
+/* harmony import */ var _const_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./const.js */ "./src/const.js");
+
+
+
+
+const start = () => {
+    (0,_user_page_header_js__WEBPACK_IMPORTED_MODULE_0__.updatePageHeader)();
+    (0,_api_js__WEBPACK_IMPORTED_MODULE_1__.getData)(_const_js__WEBPACK_IMPORTED_MODULE_2__.Url.EFFECT.GET, (response) => {
+        const data = JSON.parse(response);
+        localStorage.setItem(_const_js__WEBPACK_IMPORTED_MODULE_2__.AppStorage.EFFECTS, JSON.stringify(data));
+    });
+}
+
+const restart = () => {
+
+}
+
+
+
+
+/***/ }),
+
 /***/ "./src/upload-form.js":
 /*!****************************!*\
   !*** ./src/upload-form.js ***!
   \****************************/
-/***/ (() => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-const uploadModalElement = document.querySelector('.img-upload__overlay');
-const hashtagsInput = uploadModalElement.querySelector('.text__hashtags');
-const descriptionTextarea = uploadModalElement.querySelector('.text__description');
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   onDescTextareaInput: () => (/* binding */ onDescTextareaInput),
+/* harmony export */   onHashtagsInput: () => (/* binding */ onHashtagsInput),
+/* harmony export */   setUploadFormSabmit: () => (/* binding */ setUploadFormSabmit)
+/* harmony export */ });
+/* harmony import */ var _validation_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./validation.js */ "./src/validation.js");
+/* harmony import */ var _user_util_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./user/util.js */ "./src/user/util.js");
+/* harmony import */ var _api_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./api.js */ "./src/api.js");
+/* harmony import */ var _const_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./const.js */ "./src/const.js");
+
+
+
+
 
 const MAX_DESCRIPTION_LENGTH = 400;
-const MAX_HASHTAGS_LENGTH = 20;
-const MAX_HASHTAGS_COUNT = 5;
+const uploadFormElement = document.querySelector('#upload-select-image');
+const submitBtnElement = uploadFormElement.querySelector('[type=submit]');
 
-if (descriptionTextarea) {
-    descriptionTextarea.addEventListener('input', () => {
-        const valueLength = descriptionTextarea.value.length;
+/**
+ * Обработчик события INPUT к полю описания публикации
+ * @param {InputEvent} evt Объект события
+ * @return {undefined}
+ */
+const onDescTextareaInput = (evt) => {
+    console.log(evt);
+    const valueLength = evt.target.value.length;
+    let error = '';
 
-        let error = '';
-        if (valueLength > MAX_DESCRIPTION_LENGTH) {
-            error = `Удалите лишние ${valueLength - MAX_DESCRIPTION_LENGTH} симв.`;
+    if (valueLength > MAX_DESCRIPTION_LENGTH) {
+        error = `Удалите лишние ${valueLength - MAX_DESCRIPTION_LENGTH} симв.`;
+    }
+
+    evt.target.setCustomValidity(error);
+    evt.target.reportValidity();
+};
+
+const onHashtagsInput = (evt) => {
+    const errors = new Set();
+    const uniqueHashtags = new Set();
+
+    const errorAddition = {};
+    errorAddition[_validation_js__WEBPACK_IMPORTED_MODULE_0__.VALIDATION_ERROR_KEYS[3]] = null;
+    errorAddition[_validation_js__WEBPACK_IMPORTED_MODULE_0__.VALIDATION_ERROR_KEYS[5]] = null;
+
+    for (const hashtag of evt.target.value.split(' ')) {
+        if (hashtag === '') {
+            continue;
         }
 
-        descriptionTextarea.setCustomValidity(error);
-        descriptionTextarea.reportValidity();
-    });
-}
+        for (const validator of _validation_js__WEBPACK_IMPORTED_MODULE_0__.VALIDATORS) {
+            const args = [hashtag, uniqueHashtags, errorAddition];
+            if (validator.callback.apply(validator, args)) {
+                errors.add(validator.error);
+            }
+        }
+    }
 
-if (hashtagsInput) {
-    hashtagsInput.addEventListener('input', () => {
-        const checkHashtags = hashtagsInput.value.split(' ')
-        let error = '';
-        if (checkHashtags.length > MAX_HASHTAGS_COUNT) {
-            error = `Удалите лишние ${checkHashtags.length - MAX_HASHTAGS_COUNT} хешт.`;
+    const resultErrors = [];
+
+    for (const error of errors) {
+        if ([_validation_js__WEBPACK_IMPORTED_MODULE_0__.VALIDATION_ERROR_KEYS[3], _validation_js__WEBPACK_IMPORTED_MODULE_0__.VALIDATION_ERROR_KEYS[5]].includes(error)) {
+            resultErrors.push(error + errorAddition[error])
+        } else {
+            resultErrors.push(error);
+        }
+    }
+
+    evt.target.setCustomValidity(resultErrors.join('\n'));
+    evt.target.reportValidity();
+};
+
+const setUploadFormSabmit = (onSuccess, onFail) => {
+    uploadFormElement.addEventListener('submit', (evt) => {
+        evt.preventDefault();
+
+        if (!localStorage.getItem(_const_js__WEBPACK_IMPORTED_MODULE_3__.AppStorage.ACCESS_TOKEN)) {
+            return;
         }
 
-        for (const hashtag of checkHashtags) {
-            if (hashtag[0] !== '#') {
-                error = `Добавте хештег в начало`;
-            }
+        const {user} = JSON.parse(localStorage.getItem(_const_js__WEBPACK_IMPORTED_MODULE_3__.AppStorage.ACCESS_TOKEN));
 
-            if (hashtag.length === 1 && hashtag[0] === '#') {
-                error = `Напишите хештег`;
-            }
+        const formData = new FormData(uploadFormElement);
+        formData.set('user_id', user.id);
 
-            if (hashtag.length > 20) {
-                error = `Удалите лишние ${hashtag.length - MAX_HASHTAGS_LENGTH} симв.`;
-            }
+        (0,_user_util_js__WEBPACK_IMPORTED_MODULE_1__.blockButton)(submitBtnElement, 'Публикация');
+        window.setTimeout(() => {
+            (0,_api_js__WEBPACK_IMPORTED_MODULE_2__.sendData)(
+                _const_js__WEBPACK_IMPORTED_MODULE_3__.Url.PICTURE.POST,
+                () => {
+                    (0,_user_util_js__WEBPACK_IMPORTED_MODULE_1__.unblockButton)(submitBtnElement);
+                    onSuccess();
+                },
+                () => {},
+                formData
+            );
+            console.log(formData);
+        }, 2000);
+    })
+};
 
-            // if (checkHashtags.includes(hashtag)) {
-            //     error = `Удалите повторяющийся хештег (${hashtag})`;
-            // }
-        }
 
-        hashtagsInput.setCustomValidity(error);
-        hashtagsInput.reportValidity();
 
-})
-}
 
 /***/ }),
 
@@ -412,9 +623,15 @@ if (hashtagsInput) {
   \*****************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   closeUploadModal: () => (/* binding */ closeUploadModal)
+/* harmony export */ });
 /* harmony import */ var _zoom_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./zoom.js */ "./src/zoom.js");
+/* harmony import */ var _effects_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./effects.js */ "./src/effects.js");
+/* harmony import */ var _upload_form_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./upload-form.js */ "./src/upload-form.js");
+
+
 
 
 const uploadModalElement = document.querySelector('.img-upload__overlay');
@@ -424,6 +641,10 @@ const previewImgElement = uploadModalElement.querySelector('.img-upload__preview
 const scaleControlBiggerElement = uploadModalElement.querySelector('.scale__control--bigger');
 const scaleControlSmallerElement = uploadModalElement.querySelector('.scale__control--smaller');
 const effectPreviewElements = document.getElementsByClassName('effects__item');
+const effectListElement = document.querySelector('.effects__list');
+const effectLevelSliderElement = document.querySelector('.effect-level__slider');
+const hashtagsInput = uploadModalElement.querySelector('.text__hashtags');
+const descriptionTextarea = uploadModalElement.querySelector('.text__description');
 
 const onModalEscKeydown = (evt) => {
     if (evt.code === 'Escape') {
@@ -444,26 +665,65 @@ const updateUploadPreview = (file) => {
     reader.readAsDataURL(file);
 };
 
-const openUploadModal = (file) => {
+const handlers = [
+    {
+        element: uploadModalCloseElement,
+        event: 'click',
+        callback: closeUploadModal
+    },
+    {
+        element: document,
+        event: 'keydown',
+        callback: onModalEscKeydown
+    },
+    {
+        element: scaleControlBiggerElement,
+        event: 'click',
+        callback: _zoom_js__WEBPACK_IMPORTED_MODULE_0__.zoomPlus
+    },
+    {
+        element: scaleControlSmallerElement,
+        event: 'click',
+        callback: _zoom_js__WEBPACK_IMPORTED_MODULE_0__.zoomMinus
+    },
+    {
+        element: effectListElement,
+        event: 'change',
+        callback: _effects_js__WEBPACK_IMPORTED_MODULE_1__.onEffectsRadioChange
+    },
+    {
+        element: hashtagsInput,
+        event: 'input',
+        callback: _upload_form_js__WEBPACK_IMPORTED_MODULE_2__.onHashtagsInput
+    },
+    {
+        element: descriptionTextarea,
+        event: 'input',
+        callback: _upload_form_js__WEBPACK_IMPORTED_MODULE_2__.onDescTextareaInput
+    }
+];
+
+function openUploadModal(file) {
     updateUploadPreview(file);
     uploadModalElement.classList.remove('hidden');
     document.body.classList.add('modal-open');
 
-    uploadModalCloseElement.addEventListener('click', closeUploadModal);
-    document.addEventListener('keydown', onModalEscKeydown);
-    scaleControlBiggerElement.addEventListener('click', _zoom_js__WEBPACK_IMPORTED_MODULE_0__.zoomPlus);
-    scaleControlSmallerElement.addEventListener('click', _zoom_js__WEBPACK_IMPORTED_MODULE_0__.zoomMinus);
+    for (const {element, event, callback} of handlers) {
+        element.addEventListener(event, callback);
+    }
+
+    effectLevelSliderElement.noUiSlider.on('update', _effects_js__WEBPACK_IMPORTED_MODULE_1__.onSliderUpdate);
 };
 
-const closeUploadModal = () => {
+function closeUploadModal() {
     uploadModalElement.classList.add('hidden');
     document.body.classList.remove('modal-open');
 
-    uploadModalCloseElement.removeEventListener('click', closeUploadModal);
-    document.removeEventListener('keydown', onModalEscKeydown);
+    for (const {element, event, callback} of handlers) {
+        element.removeEventListener(event, callback);
+    }
 
-    scaleControlBiggerElement.removeEventListener('click', _zoom_js__WEBPACK_IMPORTED_MODULE_0__.zoomPlus);
-    scaleControlSmallerElement.removeEventListener('click', _zoom_js__WEBPACK_IMPORTED_MODULE_0__.zoomMinus);
+    effectLevelSliderElement.noUiSlider.off('update');
 };
 
 uploadModalOpenElement.addEventListener('change', () => {
@@ -472,29 +732,548 @@ uploadModalOpenElement.addEventListener('change', () => {
 });
 
 
+
+
 /***/ }),
 
-/***/ "./src/util.js":
-/*!*********************!*\
-  !*** ./src/util.js ***!
-  \*********************/
+/***/ "./src/user/login-form.js":
+/*!********************************!*\
+  !*** ./src/user/login-form.js ***!
+  \********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   getRandomArrayElement: () => (/* binding */ getRandomArrayElement),
-/* harmony export */   getRandomInt: () => (/* binding */ getRandomInt)
+/* harmony export */   setLoginFormSubmit: () => (/* binding */ setLoginFormSubmit)
 /* harmony export */ });
-const getRandomInt = (min, max) => {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+/* harmony import */ var _user_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./user-api.js */ "./src/user/user-api.js");
+/* harmony import */ var _util_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./util.js */ "./src/user/util.js");
+// import {renderEffectsList} from '../effect-list.js';
+
+
+
+const loginFormElement = document.querySelector('#login-modal form');
+const submitBtnElement = loginFormElement.querySelector('[type=submit]');
+
+const setLoginFormSubmit = (onSuccess, onFail) => {
+    loginFormElement.addEventListener('submit', (evt) => {
+        evt.preventDefault();
+        const formData = new FormData(loginFormElement);
+
+        (0,_util_js__WEBPACK_IMPORTED_MODULE_1__.blockButton)(submitBtnElement, 'Вход');
+        window.setTimeout(() => {
+            (0,_user_api_js__WEBPACK_IMPORTED_MODULE_0__.createToken)(formData, onSuccess, (errors, LOGIN_FIELDS, loginFormElement) => {
+                onFail(errors, LOGIN_FIELDS, loginFormElement);
+                (0,_util_js__WEBPACK_IMPORTED_MODULE_1__.unblockButton)(submitBtnElement);
+            });
+        }, 2000);
+    });
+
+    // renderEffectsList();
 }
 
-const getRandomArrayElement = (array) => {
-    return array[getRandomInt(0, array.length - 1)];
+
+
+
+/***/ }),
+
+/***/ "./src/user/login-modal.js":
+/*!*********************************!*\
+  !*** ./src/user/login-modal.js ***!
+  \*********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   closeLoginModal: () => (/* binding */ closeLoginModal)
+/* harmony export */ });
+const nameElement = document.querySelector('title');
+const loginModalElement = document.getElementById('login-modal');
+const loginModalOpenElement = document.getElementById('login-btn');
+const loginModalCloseElement = loginModalElement.querySelector('.btn-close');
+const modalBackdropTemplate = document.getElementById('modal-backdrop')
+    .content
+    .querySelector('.modal-backdrop');
+
+const onModalEscKeydown = (evt) => {
+    if (evt.code === 'Escape') {
+        closeLoginModal();
+    }
+};
+
+const openLoginModal = () => {
+    const modalBackdropElement = modalBackdropTemplate.cloneNode(true);
+    loginModalElement.insertAdjacentElement('afterend', modalBackdropElement);
+    loginModalElement.style.display = 'block';
+    window.setTimeout(() => {
+        loginModalElement.classList.add('show');
+        document.body.classList.add('modal-open');
+        nameElement.textContent = 'WebdotApp-1 | Вход';
+    
+        loginModalCloseElement.addEventListener('click', closeLoginModal);
+        document.addEventListener('keydown', onModalEscKeydown);
+    }, 0);
 }
+
+const closeLoginModal = () => {
+    loginModalElement.classList.remove('show');
+    window.setTimeout(() => {
+        document.querySelectorAll('.modal-backdrop').forEach((bd) => bd.remove());
+        loginModalElement.style.display = 'none';
+        document.body.classList.remove('modal-open');
+        nameElement.textContent = 'WebdotApp-1';
+    
+        loginModalCloseElement.removeEventListener('click', closeLoginModal);
+        document.removeEventListener('keydown', onModalEscKeydown);
+    }, 1000)
+}
+
+loginModalOpenElement.addEventListener('click', (evt) => {
+    evt.preventDefault()
+    openLoginModal();
+});
+
+
+
+/***/ }),
+
+/***/ "./src/user/logout.js":
+/*!****************************!*\
+  !*** ./src/user/logout.js ***!
+  \****************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   setLogoutBtnClick: () => (/* binding */ setLogoutBtnClick)
+/* harmony export */ });
+/* harmony import */ var _user_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./user-api.js */ "./src/user/user-api.js");
+/* harmony import */ var _util_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./util.js */ "./src/user/util.js");
+/* harmony import */ var _const_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../const.js */ "./src/const.js");
+
+
+
+
+const logoutBtnElement = document.getElementById('logout-btn');
+
+const setLogoutBtnClick = (onSuccess) => {
+    logoutBtnElement.addEventListener('click', () => {
+        if (!localStorage.getItem(_const_js__WEBPACK_IMPORTED_MODULE_2__.AppStorage.ACCESS_TOKEN)){
+            return;
+        }
+
+        const {token, id} = JSON.parse(localStorage.getItem(_const_js__WEBPACK_IMPORTED_MODULE_2__.AppStorage.ACCESS_TOKEN));
+
+        (0,_util_js__WEBPACK_IMPORTED_MODULE_1__.blockButton)(logoutBtnElement, 'Выход');
+        window.setTimeout(() => {
+            (0,_user_api_js__WEBPACK_IMPORTED_MODULE_0__.deleteToken)(token, id, () => {
+                onSuccess();
+                (0,_util_js__WEBPACK_IMPORTED_MODULE_1__.unblockButton)(logoutBtnElement);
+            });
+        }, 2000);
+    })
+}
+
+
+
+
+/***/ }),
+
+/***/ "./src/user/main.js":
+/*!**************************!*\
+  !*** ./src/user/main.js ***!
+  \**************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _validation_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./validation.js */ "./src/user/validation.js");
+/* harmony import */ var _signup_form_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./signup-form.js */ "./src/user/signup-form.js");
+/* harmony import */ var _login_form_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./login-form.js */ "./src/user/login-form.js");
+/* harmony import */ var _signup_modal_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./signup-modal.js */ "./src/user/signup-modal.js");
+/* harmony import */ var _page_header_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./page-header.js */ "./src/user/page-header.js");
+/* harmony import */ var _login_modal_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./login-modal.js */ "./src/user/login-modal.js");
+/* harmony import */ var _logout_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./logout.js */ "./src/user/logout.js");
+/* harmony import */ var _const_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../const.js */ "./src/const.js");
+
+
+
+
+
+
+
+
+
+(0,_login_form_js__WEBPACK_IMPORTED_MODULE_2__.setLoginFormSubmit)(
+    (token) => {
+        (0,_login_modal_js__WEBPACK_IMPORTED_MODULE_5__.closeLoginModal)();
+        localStorage.setItem(_const_js__WEBPACK_IMPORTED_MODULE_7__.AppStorage.ACCESS_TOKEN, JSON.stringify(token));
+        (0,_page_header_js__WEBPACK_IMPORTED_MODULE_4__.updatePageHeader)();
+    }, 
+    _validation_js__WEBPACK_IMPORTED_MODULE_0__.renderValidationErrors
+);
+
+(0,_signup_form_js__WEBPACK_IMPORTED_MODULE_1__.setSignupFormSubmit)(
+    _signup_modal_js__WEBPACK_IMPORTED_MODULE_3__.closeSignupModal,
+    _validation_js__WEBPACK_IMPORTED_MODULE_0__.renderValidationErrors
+);
+
+(0,_logout_js__WEBPACK_IMPORTED_MODULE_6__.setLogoutBtnClick)(() => {
+    localStorage.removeItem(_const_js__WEBPACK_IMPORTED_MODULE_7__.AppStorage.ACCESS_TOKEN);
+    (0,_page_header_js__WEBPACK_IMPORTED_MODULE_4__.updatePageHeader)();
+});
+
+
+/***/ }),
+
+/***/ "./src/user/page-header.js":
+/*!*********************************!*\
+  !*** ./src/user/page-header.js ***!
+  \*********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   updatePageHeader: () => (/* binding */ updatePageHeader)
+/* harmony export */ });
+/* harmony import */ var _const_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../const.js */ "./src/const.js");
+
+
+const userAvatarElement = document.querySelector('.wd-user-avatar');
+const userNameElement = document.getElementById('username');
+
+const updatePageHeader = () => {
+    const accessToken = localStorage.getItem(_const_js__WEBPACK_IMPORTED_MODULE_0__.AppStorage.ACCESS_TOKEN);
+    document.body.dataset.auth = Boolean(accessToken);
+
+    if (accessToken) {
+        const user = JSON.parse(accessToken).user;
+        userAvatarElement.src = _const_js__WEBPACK_IMPORTED_MODULE_0__.Url.UPLOAD.AVATAR + user.avatar;
+        userNameElement.textContent = user.name;
+    }
+}
+
+
+
+
+/***/ }),
+
+/***/ "./src/user/signup-form.js":
+/*!*********************************!*\
+  !*** ./src/user/signup-form.js ***!
+  \*********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   setSignupFormSubmit: () => (/* binding */ setSignupFormSubmit)
+/* harmony export */ });
+/* harmony import */ var _user_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./user-api.js */ "./src/user/user-api.js");
+/* harmony import */ var _util_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./util.js */ "./src/user/util.js");
+
+
+
+const signupFormElement = document.querySelector('#signup-modal form');
+const submitBtnElement = signupFormElement.querySelector('[type=submit]');
+
+const setSignupFormSubmit = (onSuccess, onFail) => {
+    signupFormElement.addEventListener('submit', (evt) => {
+        evt.preventDefault();
+        const formData = new FormData(signupFormElement);
+
+        (0,_util_js__WEBPACK_IMPORTED_MODULE_1__.blockButton)(submitBtnElement, 'Регистрация');
+        window.setTimeout(() => {
+            (0,_user_api_js__WEBPACK_IMPORTED_MODULE_0__.createUser)(formData, onSuccess, (errors, SIGNUP_FIELDS, signupFormElement) => {
+                onFail(errors, SIGNUP_FIELDS, signupFormElement);
+                (0,_util_js__WEBPACK_IMPORTED_MODULE_1__.unblockButton)(submitBtnElement);
+            });
+        }, 2000);
+    });
+}
+
+
+
+
+/***/ }),
+
+/***/ "./src/user/signup-modal.js":
+/*!**********************************!*\
+  !*** ./src/user/signup-modal.js ***!
+  \**********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   closeSignupModal: () => (/* binding */ closeSignupModal)
+/* harmony export */ });
+const nameElement = document.querySelector('title');
+const signupModalElement = document.getElementById('signup-modal');
+const signupModalOpenElement = document.getElementById('signup-btn');
+const signupModalCloseElement = signupModalElement.querySelector('.btn-close');
+const modalBackdropTemplate = document.getElementById('modal-backdrop')
+    .content
+    .querySelector('.modal-backdrop');
+
+const onModalEscKeydown = (evt) => {
+    if (evt.code === 'Escape') {
+        closeSignupModal();
+    }
+};
+
+const openSignupModal = () => {
+    const modalBackdropElement = modalBackdropTemplate.cloneNode(true);
+    signupModalElement.insertAdjacentElement('afterend', modalBackdropElement);
+    signupModalElement.style.display = 'block';
+    window.setTimeout(() => {
+        signupModalElement.classList.add('show');
+        document.body.classList.add('modal-open');
+        nameElement.textContent = 'WebdotApp-1 | Регистрация';
+    
+        signupModalCloseElement.addEventListener('click', closeSignupModal);
+        document.addEventListener('keydown', onModalEscKeydown);
+    }, 0);
+}
+
+const closeSignupModal = () => {
+    signupModalElement.classList.remove('show');
+    window.setTimeout(() => {
+        document.querySelectorAll('.modal-backdrop').forEach((bd) => bd.remove());
+        signupModalElement.style.display = 'none';
+        document.body.classList.remove('modal-open');
+        nameElement.textContent = 'WebdotApp-1';
+    
+        signupModalCloseElement.removeEventListener('click', closeSignupModal);
+        document.removeEventListener('keydown', onModalEscKeydown);
+    }, 1000)
+}
+
+signupModalOpenElement.addEventListener('click', (evt) => {
+    evt.preventDefault()
+    openSignupModal();
+});
+
+
+
+/***/ }),
+
+/***/ "./src/user/user-api.js":
+/*!******************************!*\
+  !*** ./src/user/user-api.js ***!
+  \******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   createToken: () => (/* binding */ createToken),
+/* harmony export */   createUser: () => (/* binding */ createUser),
+/* harmony export */   deleteToken: () => (/* binding */ deleteToken)
+/* harmony export */ });
+/* harmony import */ var _const_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../const.js */ "./src/const.js");
+
+
+const signupFormElement = document.querySelector('#signup-modal form');
+const loginFormElement = document.querySelector('#login-modal form');
+
+const SIGNUP_FIELDS = ['email', 'password_hash', 'username', 'avatar'];
+const LOGIN_FIELDS = ['email', 'password'];
+
+const createUser = (body, onSuccess, onFail) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', _const_js__WEBPACK_IMPORTED_MODULE_0__.Url.USER.POST);
+
+    xhr.addEventListener('load', () => {
+        if (xhr.status === 201) {
+            onSuccess();
+        } else {
+            const errors = JSON.parse(xhr.response);
+            onFail(errors, SIGNUP_FIELDS, signupFormElement);
+        }
+    });
+
+    xhr.send(body);
+}
+
+const createToken = (body, onSuccess, onFail) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', _const_js__WEBPACK_IMPORTED_MODULE_0__.Url.ACCESS_TOKEN.POST);
+
+    xhr.addEventListener('load', () => {
+        if (xhr.status === 201) {
+            const token = JSON.parse(xhr.response);
+            onSuccess(token);
+        } else {
+            const errors = [];
+            const response = JSON.parse(xhr.getResponseHeader('Errors'));
+
+            for (const key in response) {
+                errors.push({
+                    field: key,
+                    message: response[key][0]
+                });
+            }
+
+            onFail(errors, LOGIN_FIELDS, loginFormElement);
+        }
+    })
+
+    xhr.send(body);
+}
+
+const deleteToken = (token, tokenId, onSuccess) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('DELETE', `${_const_js__WEBPACK_IMPORTED_MODULE_0__.Url.ACCESS_TOKEN.DELETE}${tokenId}`);
+    xhr.setRequestHeader('Authorization', `Basic ${btoa(token + ':')}`);
+
+    // FIXME:
+    if (xhr.status === 0) { 
+        onSuccess();
+    }
+
+    xhr.send();
+}
+
+
+
+
+/***/ }),
+
+/***/ "./src/user/util.js":
+/*!**************************!*\
+  !*** ./src/user/util.js ***!
+  \**************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   blockButton: () => (/* binding */ blockButton),
+/* harmony export */   unblockButton: () => (/* binding */ unblockButton)
+/* harmony export */ });
+const spinnerTemplate = document.getElementById('spinner')
+    .content
+    .querySelector('.spinner-border');
+
+const blockButton = (buttonElement, text) => {
+    blockButton.oldText = buttonElement.innerText;
+    const spinnerElement = spinnerTemplate.cloneNode(true);
+    buttonElement.setAttribute('disabled', '');
+    buttonElement.style.cursor = 'not-allowed';
+
+    buttonElement.innerHTML = '';
+    buttonElement.insertAdjacentElement('beforeend', spinnerElement);
+    buttonElement.insertAdjacentText('beforeend', `${text}...`);
+};
+
+const unblockButton = (buttonElement) => {
+    buttonElement.innerHTML = blockButton.oldText;
+    buttonElement.removeAttribute('disabled');
+    buttonElement.style.cursor = 'pointer';
+};
+
+
+
+
+/***/ }),
+
+/***/ "./src/user/validation.js":
+/*!********************************!*\
+  !*** ./src/user/validation.js ***!
+  \********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   renderValidationErrors: () => (/* binding */ renderValidationErrors)
+/* harmony export */ });
+const clearValidationErrors = (formElement) => {
+    for (const inputElement of formElement.querySelectorAll('input')) {
+        inputElement.classList.remove('is-invalid');
+        inputElement.nextElementSibling.textContent = '';
+    }
+};
+
+const renderValidationErrors = (errors, fields, formElement) => {
+    clearValidationErrors(formElement);
+
+    for (const error of errors) {
+        if (fields.includes(error.field)) {
+            const inputElement = formElement.querySelector(`[name=${error.field}]`);
+            inputElement.classList.add('is-invalid');
+            inputElement.nextElementSibling.textContent = error.message;
+        }
+    }
+};
+
+
+
+
+/***/ }),
+
+/***/ "./src/validation.js":
+/*!***************************!*\
+  !*** ./src/validation.js ***!
+  \***************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   VALIDATION_ERROR_KEYS: () => (/* binding */ VALIDATION_ERROR_KEYS),
+/* harmony export */   VALIDATORS: () => (/* binding */ VALIDATORS)
+/* harmony export */ });
+const MAX_HASHTAG_LENGTH = 20;
+const MAX_HASHTAG_COUNT = 5;
+
+const VALIDATION_ERROR_KEYS = [
+    'Хэштег должен начинаться c символа "#".',
+    'Строка после решётки, должна состоять только из букв и чисел.',
+    'Хэштег не может состоять только из одной решётки.',
+    `Максимальная длина хэштега - ${MAX_HASHTAG_LENGTH} символов (включая решётку).`,
+    'Один и тот же хэштег, не может быть использован дважды.',
+    'Нельзя указать больше пяти хэштегов.'
+];
+
+const VALIDATORS = [
+    {
+        callback: (hashtag) => hashtag[0] !== '#',
+        error: VALIDATION_ERROR_KEYS[0],
+    },
+    {
+        callback: (hashtag) => hashtag.length > 1 && !/^#[A-Za-zА-Яа-я0-9]{1,19}$/.test(hashtag),
+        error: VALIDATION_ERROR_KEYS[1],
+    },
+    {
+        callback: (hashtag) => hashtag === '#',
+        error: VALIDATION_ERROR_KEYS[2],
+    },
+    {
+        callback: function (hashtag, uniqueHashtags, errorAddition) {
+            if (hashtag.length > MAX_HASHTAG_LENGTH) {
+                const message = ` Удалите лишние ${hashtag.length - MAX_HASHTAG_LENGTH} симв.`;
+                errorAddition[this.error] = message;
+                return true;
+            }
+            return false;
+        },
+        error: VALIDATION_ERROR_KEYS[3], 
+    },
+    {
+        callback: function (hashtag, uniqueHashtags, errorAddition) {
+            const isNotUnique = uniqueHashtags.has(hashtag.toLowerCase());
+            uniqueHashtags.add(hashtag.toLowerCase());
+            return isNotUnique;
+        },
+        error: VALIDATION_ERROR_KEYS[4],
+    },
+    {
+        callback: function (hashtag, uniqueHashtags, errorAddition) {
+            if (uniqueHashtags.size > MAX_HASHTAG_COUNT) {
+                const message = ` Удалите лишние ${uniqueHashtags.size - MAX_HASHTAG_COUNT} хешт.`;
+                errorAddition[this.error] = message;
+                return true;
+            }
+            return false;
+        },
+        error: VALIDATION_ERROR_KEYS[5],
+    },
+]
 
 
 
@@ -507,7 +1286,6 @@ const getRandomArrayElement = (array) => {
   \*********************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   zoomMinus: () => (/* binding */ zoomMinus),
@@ -519,7 +1297,7 @@ const scaleControlBiggerElement = uploadModalElement.querySelector('.scale__cont
 const scaleControlSmallerElement = uploadModalElement.querySelector('.scale__control--smaller');
 const previewImgElement = uploadModalElement.querySelector('.img-upload__preview img');
 
-const SCALE_CONTROL_MAX_VALUE = 200;
+const SCALE_CONTROL_MAX_VALUE = 100;
 const SCALE_CONTROL_MIN_VALUE = 25;
 const SCALE_CONTROL_STEP = 25;
 
@@ -528,20 +1306,13 @@ const isMinValue = (value) => value === SCALE_CONTROL_MIN_VALUE;
 
 const updateScaleControlElements = () => {
     const value = Number(scaleControlValueElement.value.replace('%', ''));
-    // if (isMaxValue(value)) {
-    //     scaleControlBiggerElement.style.cursor = 'not-allowed';
-    // } else {
-    //     scaleControlBiggerElement.style.cursor = 'pointer';
-    // }
-    
-    // if (isMinValue(value)) {
-    //     scaleControlSmallerElement.style.cursor = 'not-allowed';
-    // } else {
-    //     scaleControlSmallerElement.style.cursor = 'pointer';
-    // }
 
-    scaleControlBiggerElement.style.cursor = isMaxValue(value) ? 'not-allowed' : 'pointer';
-    scaleControlSmallerElement.style.cursor = isMinValue(value) ? 'not-allowed' : 'pointer';
+    scaleControlBiggerElement.style.cursor = isMaxValue(value)
+        ? 'not-allowed'
+        : 'pointer';
+    scaleControlSmallerElement.style.cursor = isMinValue(value)
+        ? 'not-allowed'
+        : 'pointer';
 }
 
 const zoomPlus = () => {
@@ -596,18 +1367,6 @@ const zoomMinus = () => {
 /******/ 	}
 /******/ 	
 /************************************************************************/
-/******/ 	/* webpack/runtime/compat get default export */
-/******/ 	(() => {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = (module) => {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				() => (module['default']) :
-/******/ 				() => (module);
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	})();
-/******/ 	
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	(() => {
 /******/ 		// define getter functions for harmony exports
@@ -638,28 +1397,49 @@ const zoomMinus = () => {
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be in strict mode.
+// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-"use strict";
 /*!*********************!*\
   !*** ./src/main.js ***!
   \*********************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _data_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./data.js */ "./src/data.js");
-/* harmony import */ var _pictures_list_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./pictures-list.js */ "./src/pictures-list.js");
-/* harmony import */ var _effects_list_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./effects-list.js */ "./src/effects-list.js");
-/* harmony import */ var _upload_modal_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./upload-modal.js */ "./src/upload-modal.js");
+/* harmony import */ var _picture_list_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./picture-list.js */ "./src/picture-list.js");
+/* harmony import */ var _comment_form_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./comment-form.js */ "./src/comment-form.js");
+/* harmony import */ var _upload_modal_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./upload-modal.js */ "./src/upload-modal.js");
+/* harmony import */ var _effect_list_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./effect-list.js */ "./src/effect-list.js");
 /* harmony import */ var _upload_form_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./upload-form.js */ "./src/upload-form.js");
-/* harmony import */ var _upload_form_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_upload_form_js__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _const_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./const.js */ "./src/const.js");
+/* harmony import */ var _start_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./start.js */ "./src/start.js");
+/* harmony import */ var _user_main_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./user/main.js */ "./src/user/main.js");
+/* harmony import */ var _api_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./api.js */ "./src/api.js");
 
 
 
 
 
 
-const pictures = (0,_data_js__WEBPACK_IMPORTED_MODULE_0__.generatePictures)(50);
-(0,_pictures_list_js__WEBPACK_IMPORTED_MODULE_1__.renderPicturesList)(pictures);
-(0,_effects_list_js__WEBPACK_IMPORTED_MODULE_2__.renderEffectsList)();
+
+
+
+
+
+(0,_start_js__WEBPACK_IMPORTED_MODULE_6__.start)();
+
+(0,_api_js__WEBPACK_IMPORTED_MODULE_8__.getData)(_const_js__WEBPACK_IMPORTED_MODULE_5__.Url.PICTURE.GET, (response) => {
+    const pictures = JSON.parse(response);
+    (0,_picture_list_js__WEBPACK_IMPORTED_MODULE_0__.renderPicturesList)(pictures);
+});
+
+(0,_effect_list_js__WEBPACK_IMPORTED_MODULE_3__.renderEffectsList)();
+
+(0,_upload_form_js__WEBPACK_IMPORTED_MODULE_4__.setUploadFormSabmit)(
+    () => {
+        (0,_upload_modal_js__WEBPACK_IMPORTED_MODULE_2__.closeUploadModal)();
+        // restart();
+});
+
+(0,_comment_form_js__WEBPACK_IMPORTED_MODULE_1__.setCommentFormSabmit)(() => {});
+
 })();
 
 /******/ })()

@@ -75,9 +75,6 @@ const setUploadFormSabmit = (onSuccess, onFail) => {
 
         blockButton(submitBtnElement, 'Публикация');
         window.setTimeout(() => {
-            for (const item of formData) {
-                console.log(item);
-            }
             sendData(
                 Url.PICTURE.POST,
                 () => {
@@ -87,7 +84,7 @@ const setUploadFormSabmit = (onSuccess, onFail) => {
                 () => {},
                 formData
             );
-            
+            console.log(formData);
         }, 2000);
     })
 };

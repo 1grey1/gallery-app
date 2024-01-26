@@ -14,7 +14,7 @@ const onModalEscKeydown = (evt) => {
 };
 
 const openPreviewModal = (picture) => {
-    previewModalImgElement.setAttribute('src', picture.url);
+    previewModalImgElement.setAttribute('src', `http://localhost:80/uploads/pictures/${picture.url}`);
     previewModalLikesElement.textContent = picture.likes;
     totalCommentCountElement.textContent = picture.comments.length;
     previewModalDescElement.textContent = picture.description;

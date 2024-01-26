@@ -8,7 +8,8 @@ const Url = {
         DELETE: `${scheme}://${host}:${port}/logout/`
     },
     COMMENT: {
-        POST: null,
+        GET: `${scheme}://${host}:${port}/comment`,
+        POST: `${scheme}://${host}:${port}/comment`
     },
     EFFECT: {
         GET: `${scheme}://${host}:${port}/effect`

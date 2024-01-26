@@ -10,8 +10,8 @@ const start = () => {
     });
 }
 
-const testart = () => {
+const restart = () => {
 
 }
 
-export {start};
+export {start,restart};
