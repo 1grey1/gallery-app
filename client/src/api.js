@@ -34,13 +34,33 @@ const sendData = (url, onSuccess, onFail, body) => {
     xhr.addEventListener('load', () => {
         if (xhr.status === 201) {
             onSuccess();
+        } else {
+            onFail();
         }
     });
 
     xhr.send(body);
 }
 
+const deleteData = (url, onSuccess, onFail) => {
+    const token = getToken();
+
+    const xhr = new XMLHttpRequest();
+    xhr.open('DELETE', url);
+    xhr.setRequestHeader('Authorization', `Basic ${btoa(token + ':')}`);
+    console.log(xhr.status);
+    // FIXME:
+    if (xhr.status === 0) { 
+        onSuccess();
+    } else {
+        onFail();
+    }
+
+    xhr.send();
+}
+
 export {
     getData,
-    sendData
+    sendData,
+    deleteData
 };

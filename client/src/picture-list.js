@@ -11,7 +11,7 @@ const renderPicturesList = (pictures) => {
 
         pictureElement.dataset.id = id;
         pictureElement.querySelector('.picture__img').setAttribute('src', `http://localhost:80/uploads/pictures/${url}`);
-        pictureElement.querySelector('.picture__likes').textContent = likes;
+        pictureElement.querySelector('.picture__likes').textContent = likes.length;
         pictureElement.querySelector('.picture__comments').textContent = comments.length;
         pictureListElement.append(pictureElement);
     }

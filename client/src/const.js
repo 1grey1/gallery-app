@@ -8,15 +8,14 @@ const Url = {
         DELETE: `${scheme}://${host}:${port}/logout/`
     },
     COMMENT: {
-        GET: `${scheme}://${host}:${port}/comment`,
         POST: `${scheme}://${host}:${port}/comment`
     },
     EFFECT: {
         GET: `${scheme}://${host}:${port}/effect`
     },
     LIKE: {
-        POST: null,
-        DELETE: null
+        POST: `${scheme}://${host}:${port}/like`,
+        DELETE: `${scheme}://${host}:${port}/like/`
     },
     PICTURE: {
         GET: `${scheme}://${host}:${port}/picture`,
@@ -33,7 +32,8 @@ const Url = {
 
 const AppStorage = {
     ACCESS_TOKEN: `gallery_${btoa('token')}`,
-    EFFECTS: `gallery_${btoa('effects')}`
+    EFFECTS: `gallery_${btoa('effects')}`,
+    PICTURE: `gallery_${btoa('picture')}`
 }
 
 export {

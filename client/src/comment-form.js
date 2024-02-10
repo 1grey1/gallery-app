@@ -3,7 +3,7 @@ import {sendData} from './api.js';
 import {AppStorage, Url} from './const.js';
 
 const commentFormElement = document.querySelector('#comment-form');
-const  submitBtnElement = commentFormElement.querySelector('[type=submit]');
+const submitBtnElement = commentFormElement.querySelector('[type=submit]');
 
 const setCommentFormSabmit = (onSuccess, onFail) => {
     commentFormElement.addEventListener('submit', (evt) => {
@@ -14,9 +14,11 @@ const setCommentFormSabmit = (onSuccess, onFail) => {
         }
 
         const {user} = JSON.parse(localStorage.getItem(AppStorage.ACCESS_TOKEN));
+        const picture = JSON.parse(localStorage.getItem(AppStorage.PICTURE));
 
         const formData = new FormData(commentFormElement);
         formData.set('user_id', user.id);
+        formData.set('picture_id', picture.id);
 
         blockButton(submitBtnElement, 'Отправка');
         window.setTimeout(() => {
@@ -30,7 +32,6 @@ const setCommentFormSabmit = (onSuccess, onFail) => {
                 formData
             );
         }, 2000);
-        console.log(1);
     });
 };
 

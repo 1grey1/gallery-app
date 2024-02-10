@@ -1,3 +1,5 @@
+import {Url} from './const.js';
+
 const totalCommentCountElement = document.querySelector('.comments-count');
 const renderedCommentCountElement = document.querySelector('.comments-count--rendered');
 const showMoreButtonElement = document.querySelector('.social__comments-loader');
@@ -29,7 +31,7 @@ const renderComments = (comments, from, to) => {
     for (const {message, user} of comments.slice(from, to)) {
         const commentElement = commentTemlate.cloneNode(true);
         commentElement.querySelector('.social__text').textContent = message;
-        commentElement.querySelector('.social__picture').setAttribute('src', user.avatar);
+        commentElement.querySelector('.social__picture').src = Url.UPLOAD.AVATAR + user.avatar;
         commentListElement.append(commentElement);
         renderedCommentCountElement.textContent = String((+renderedCommentCountElement.textContent) + 1);
     }

@@ -112,3 +112,8 @@ label[for=upload-file]:hover {
     align-items: center;
     justify-content: center;
 }
+
+
+details summary::-webkit-details-marker {
+    display: block;
+}
