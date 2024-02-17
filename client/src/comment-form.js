@@ -4,6 +4,7 @@ import {AppStorage, Url} from './const.js';
 
 const commentFormElement = document.querySelector('#comment-form');
 const submitBtnElement = commentFormElement.querySelector('[type=submit]');
+const aa = document.querySelector('.big-picture__social social');
 
 const setCommentFormSabmit = (onSuccess, onFail) => {
     commentFormElement.addEventListener('submit', (evt) => {
