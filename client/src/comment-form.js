@@ -3,8 +3,8 @@ import {sendData} from './api.js';
 import {AppStorage, Url} from './const.js';
 
 const commentFormElement = document.querySelector('#comment-form');
-const submitBtnElement = commentFormElement.querySelector('[type=submit]');
-const aa = document.querySelector('.big-picture__social social');
+const submitBtnElement = commentFormElement.querySelector('[type=submit]');;
+const commentInputElement = commentFormElement.querySelector('.social__footer-text');
 
 const setCommentFormSabmit = (onSuccess, onFail) => {
     commentFormElement.addEventListener('submit', (evt) => {
@@ -26,8 +26,9 @@ const setCommentFormSabmit = (onSuccess, onFail) => {
             sendData(
                 Url.COMMENT.POST,
                 () => {
+                    onSuccess(picture.id);
+                    commentInputElement.value = '';
                     unblockButton(submitBtnElement);
-                    onSuccess();
                 },
                 () => {},
                 formData

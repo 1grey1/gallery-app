@@ -1,3 +1,4 @@
+import {AppStorage} from "./const.js";
 import {openPreviewModal} from "./preview-modal.js";
 
 const pictureListElement = document.querySelector('.pictures');
@@ -11,6 +12,7 @@ const renderPicturesList = (pictures) => {
 
         pictureElement.dataset.id = id;
         pictureElement.querySelector('.picture__img').setAttribute('src', `http://localhost:80/uploads/pictures/${url}`);
+        // TODO: вынести в функцию
         pictureElement.querySelector('.picture__likes').textContent = likes.length;
         pictureElement.querySelector('.picture__comments').textContent = comments.length;
         pictureListElement.append(pictureElement);
@@ -25,4 +27,23 @@ const renderPicturesList = (pictures) => {
     });
 }
 
-export {renderPicturesList};
+const updatePicture = (picture) => {
+    localStorage.setItem(AppStorage.PICTURE, JSON.stringify(picture));
+    const {id, comments, likes} = picture;
+    const pictureElement = document.querySelector(`.picture[data-id="${id}"]`)
+    if  (pictureElement) {
+        pictureElement.querySelector('.picture__comments').textContent = comments.length;
+        pictureElement.querySelector('.picture__likes').textContent = likes.length;
+    }
+}
+
+export {renderPicturesList, updatePicture};
+
+// const test1 = function (value1, value2) {
+//     this.x = 666;
+// };
+
+// const test2 = function () {};
+
+// test1.call(test2, 10, 20);
+// test1.apply(test2, [10, 20]);
