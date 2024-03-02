@@ -8,7 +8,7 @@ const getToken = () => {
     return JSON.parse(localStorage.getItem(AppStorage.ACCESS_TOKEN)).token;
 }
 
-const getData = (url, onSuccess, onFail) => {
+const getData = (url, onSuccess, parse = false) => {
     const token = getToken();
 
     const xhr = new XMLHttpRequest();
@@ -17,7 +17,8 @@ const getData = (url, onSuccess, onFail) => {
 
     xhr.addEventListener('load', () => {
         if (xhr.status === 200) {
-            onSuccess(xhr.response);
+            const response = parse ? JSON.parse(xhr.response) : xhr.response;
+            onSuccess(response);
         }
     });
 
@@ -48,13 +49,14 @@ const deleteData = (url, onSuccess, onFail) => {
     const xhr = new XMLHttpRequest();
     xhr.open('DELETE', url);
     xhr.setRequestHeader('Authorization', `Basic ${btoa(token + ':')}`);
-    console.log(xhr.status);
     // FIXME:
-    if (xhr.status === 0) { 
-        onSuccess();
-    } else {
-        onFail();
-    }
+    xhr.addEventListener('load', () => {
+        if ([0, 204].includes(xhr.status)) { 
+            onSuccess();
+        } else {
+            onFail();
+        }
+    });
 
     xhr.send();
 }

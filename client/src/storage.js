@@ -5,4 +5,12 @@ const getUser = () => {
     return JSON.parse(token).user;
 }
 
-export {getUser};
+const getCurrentPicture = () => {
+    console.log(JSON.parse(localStorage.getItem('gallery_cGljdHVyZQ==')));
+    return JSON.parse(localStorage.getItem(AppStorage.PICTURE));
+}
+
+export {
+    getUser,
+    getCurrentPicture
+};

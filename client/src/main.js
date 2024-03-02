@@ -7,6 +7,7 @@ import {updatePicture} from './picture-list.js';
 import {start, restart} from './start.js';
 import {getData} from './api.js';
 import {AppStorage, Url} from './const.js';
+import {getCurrentPicture} from './storage.js';
 import './upload-modal.js';
 import './user/main.js';
 
@@ -18,13 +19,19 @@ setUploadFormSabmit(() => {
 });
 
 setCommentFormSabmit((pictureId) => {
-    getData(Url.PICTURE.GET + `/${pictureId}`, (response) => {
-        const picture = JSON.parse(response);
+    getData(Url.PICTURE.GET + `/${pictureId}`, (picture) => {
+        localStorage.setItem(AppStorage.PICTURE, JSON.stringify(picture));
         updatePicture(picture);
         renderCommentList(picture.comments);
-    });
+    }, true);
 });
 
-setLikesCountClick(()=>{
-    updateLikesCount(JSON.parse(localStorage.getItem(AppStorage.PICTURE)).likes);
+setLikesCountClick((pictureId) => {
+    getData(Url.PICTURE.GET + `/${pictureId}`, (picture) => {
+        localStorage.setItem(AppStorage.PICTURE, JSON.stringify(picture));
+        updatePicture(picture);
+        console.log(picture);
+        console.log(picture.likes.length);
+        updateLikesCount(picture.likes);
+    }, true);
 });

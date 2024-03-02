@@ -1,35 +1,47 @@
 import {blockButton, unblockButton} from './user/util.js';
 import {sendData, deleteData} from './api.js';
 import {AppStorage, Url} from './const.js';
+import {getCurrentPicture} from './storage.js';
 
-const  submitBtnElement = document.querySelector('.likes-count');
+const submitBtnElement = document.querySelector('.likes-count');
 const previewModalLikesElement = document.querySelector('.likes-count');
 
-const getLike = (likes, user_id) => likes.find((like) => like.user_id == user_id);
+const getLike = (likes, userId, pictureId) => {
+    // console.log(`userID - ${userId}`);
+    // console.log(`pictureId - ${pictureId}`);
+    // console.log(likes);
+    // console.log('-'.repeat(10));
+    return likes.find((like) => {
+        return like.user_id == userId && like.picture_id == pictureId;
+    })
+};
 
 const updateLikesCount = (likes) => {
+    console.log(likes.length);
     previewModalLikesElement.textContent = likes.length;
+    const picture = JSON.parse(localStorage.getItem('gallery_cGljdHVyZQ=='));
     const {user} = JSON.parse(localStorage.getItem(AppStorage.ACCESS_TOKEN));
 
-    if (getLike(likes, user.id)) {
+    if (getLike(picture.likes, user.id, picture.id)) {
         submitBtnElement.classList.add('likes-count--active');
     } else {
         submitBtnElement.classList.remove('likes-count--active');
     }
+    // console.log('Stop');
 }
 
 const setLike = (onSuccess, userId, pictureId) => {
     const formData = new FormData();
     formData.set('user_id', userId);
     formData.set('picture_id', pictureId);
-
+    
     blockButton(submitBtnElement);
     window.setTimeout(() => {
         sendData(
             Url.LIKE.POST,
             () => {
-                unblockButton(submitBtnElement);
                 onSuccess();
+                unblockButton(submitBtnElement);
             },
             () => {
                 unblockButton(submitBtnElement);
@@ -42,13 +54,16 @@ const setLike = (onSuccess, userId, pictureId) => {
 const removeLike = (onSuccess, likeId) => {
     blockButton(submitBtnElement);
     window.setTimeout(() => {
+        console.log('Send1');
         deleteData(
             Url.LIKE.DELETE + likeId,
             () => {
-                unblockButton(submitBtnElement);
+                console.log('Send2');
                 onSuccess();
+                unblockButton(submitBtnElement);
             },
             () => {
+                console.log(3);
                 unblockButton(submitBtnElement);
             }
         )
@@ -65,20 +80,23 @@ const setLikesCountClick = (onSuccess) => {
         const {user} = JSON.parse(localStorage.getItem(AppStorage.ACCESS_TOKEN));
         const picture = JSON.parse(localStorage.getItem(AppStorage.PICTURE));
 
-        if (getLike(picture.likes, user.id)) {
+        if (getLike(picture.likes, user.id, picture.id)) {
             const likeId = picture.likes.find(like => like.user_id === user.id).id;
-            const cb = () => console.log(picture.likes.find(x => x.user_id === user.id).id);
             removeLike(
                 () => {
-                    cb();
-                    onSuccess();
+                    onSuccess(picture.id);
                 },
                 likeId
             );
         } else {
-            setLike(onSuccess, user.id, picture.id);
+            setLike(
+                () => {
+                    onSuccess(picture.id);
+                },
+                user.id,
+                picture.id
+            );
         }
-
     });
 
 };

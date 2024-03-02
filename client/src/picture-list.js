@@ -28,9 +28,8 @@ const renderPicturesList = (pictures) => {
 }
 
 const updatePicture = (picture) => {
-    localStorage.setItem(AppStorage.PICTURE, JSON.stringify(picture));
     const {id, comments, likes} = picture;
-    const pictureElement = document.querySelector(`.picture[data-id="${id}"]`)
+    const pictureElement = document.querySelector(`.picture[data-id="${id}"]`);
     if  (pictureElement) {
         pictureElement.querySelector('.picture__comments').textContent = comments.length;
         pictureElement.querySelector('.picture__likes').textContent = likes.length;
