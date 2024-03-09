@@ -33,7 +33,7 @@ const setCommentFormSabmit = (onSuccess, onFail) => {
                 () => {},
                 formData
             );
-        }, 2000);
+        }, 500);
     });
 };
 

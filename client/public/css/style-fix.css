@@ -18,7 +18,7 @@ label[for=upload-file] {
     top: auto;
     bottom: 30px !important;
     left: 30px !important;
-    z-index: 100;
+    z-index: 1;
     display: flex;
     justify-content: center;
     align-items: center;

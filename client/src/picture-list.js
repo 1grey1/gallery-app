@@ -1,4 +1,3 @@
-import {AppStorage} from "./const.js";
 import {openPreviewModal} from "./preview-modal.js";
 
 const pictureListElement = document.querySelector('.pictures');
@@ -36,7 +35,33 @@ const updatePicture = (picture) => {
     }
 }
 
-export {renderPicturesList, updatePicture};
+const clearPictureList = () => {
+    const pictureArray = Array.from(document.getElementsByClassName('picture'));
+    pictureArray.forEach((picture) => picture.remove());
+}
+
+export {renderPicturesList, updatePicture, clearPictureList};
+
+// const updatePictureList = (list) => {
+//     const pictureElement = pictureTemplate.cloneNode(true);
+//     const pictureNew = list.at(-1);
+//     pictureElement.dataset.id = pictureNew.id;
+//     pictureElement.querySelector('.picture__img').setAttribute('src', `http://localhost:80/uploads/pictures/${pictureNew.url}`);
+//     // TODO: вынести в функцию
+//     pictureElement.querySelector('.picture__likes').textContent = pictureNew.likes.length;
+//     pictureElement.querySelector('.picture__comments').textContent = pictureNew.comments.length;
+//     pictureListElement.append(pictureElement);
+
+//     pictureListElement.addEventListener('click', (evt) => {
+//         const pictureElement = evt.target.closest('.picture');
+//         if (pictureElement) {
+//             const picture = list.find(picture => picture.id === +pictureElement.dataset.id);
+//             openPreviewModal(picture);
+//         }
+//     });
+// }
+
+
 
 // const test1 = function (value1, value2) {
 //     this.x = 666;

@@ -49,7 +49,6 @@ const deleteData = (url, onSuccess, onFail) => {
     const xhr = new XMLHttpRequest();
     xhr.open('DELETE', url);
     xhr.setRequestHeader('Authorization', `Basic ${btoa(token + ':')}`);
-    // FIXME:
     xhr.addEventListener('load', () => {
         if ([0, 204].includes(xhr.status)) { 
             onSuccess();

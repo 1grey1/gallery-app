@@ -84,7 +84,6 @@ const setUploadFormSabmit = (onSuccess, onFail) => {
                 () => {},
                 formData
             );
-            console.log(formData);
         }, 2000);
     })
 };

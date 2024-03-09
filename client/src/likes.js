@@ -7,17 +7,13 @@ const submitBtnElement = document.querySelector('.likes-count');
 const previewModalLikesElement = document.querySelector('.likes-count');
 
 const getLike = (likes, userId, pictureId) => {
-    // console.log(`userID - ${userId}`);
-    // console.log(`pictureId - ${pictureId}`);
-    // console.log(likes);
-    // console.log('-'.repeat(10));
+
     return likes.find((like) => {
         return like.user_id == userId && like.picture_id == pictureId;
     })
 };
 
 const updateLikesCount = (likes) => {
-    console.log(likes.length);
     previewModalLikesElement.textContent = likes.length;
     const picture = JSON.parse(localStorage.getItem('gallery_cGljdHVyZQ=='));
     const {user} = JSON.parse(localStorage.getItem(AppStorage.ACCESS_TOKEN));
@@ -27,7 +23,6 @@ const updateLikesCount = (likes) => {
     } else {
         submitBtnElement.classList.remove('likes-count--active');
     }
-    // console.log('Stop');
 }
 
 const setLike = (onSuccess, userId, pictureId) => {
@@ -54,11 +49,9 @@ const setLike = (onSuccess, userId, pictureId) => {
 const removeLike = (onSuccess, likeId) => {
     blockButton(submitBtnElement);
     window.setTimeout(() => {
-        console.log('Send1');
         deleteData(
             Url.LIKE.DELETE + likeId,
             () => {
-                console.log('Send2');
                 onSuccess();
                 unblockButton(submitBtnElement);
             },

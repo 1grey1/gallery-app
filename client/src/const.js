@@ -34,9 +34,16 @@ const AppStorage = {
     ACCESS_TOKEN: `gallery_${btoa('token')}`,
     EFFECTS: `gallery_${btoa('effects')}`,
     PICTURE: `gallery_${btoa('picture')}`
-}
+};
+
+const Filter = {
+    DEFAULT: 'default',
+    RANDOM: 'random',
+    DISCUSSED: 'discused'
+};
 
 export {
     Url,
     AppStorage,
+    Filter
 };
