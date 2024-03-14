@@ -5,10 +5,25 @@ const pictureTemplate = document.getElementById('picture')
     .content
     .querySelector('.picture');
 
-const renderPicturesList = (pictures) => {
+    
+const renderPicturesList = (pictures, sort = false) => {
+    if (sort) {
+        clearPictureList();
+    }
+    
+    const evr = (evt) => {
+        pictureListElement.removeEventListener('click', evr);
+        const pictureElement = evt.target.closest('.picture');
+        if (pictureElement) {
+            const picture = pictures.find(picture => picture.id === +pictureElement.dataset.id);
+            openPreviewModal(picture);
+            pictureListElement.addEventListener('click', evr);
+        }
+    }
+    
     for (const {id, url, likes, comments} of pictures) {
         const pictureElement = pictureTemplate.cloneNode(true);
-
+        
         pictureElement.dataset.id = id;
         pictureElement.querySelector('.picture__img').setAttribute('src', `http://localhost:80/uploads/pictures/${url}`);
         // TODO: вынести в функцию
@@ -17,21 +32,15 @@ const renderPicturesList = (pictures) => {
         pictureListElement.append(pictureElement);
     }
 
-    pictureListElement.addEventListener('click', (evt) => {
-        const pictureElement = evt.target.closest('.picture');
-        if (pictureElement) {
-            const picture = pictures.find(picture => picture.id === +pictureElement.dataset.id);
-            openPreviewModal(picture);
-        }
-    });
+    pictureListElement.addEventListener('click', evr);
 }
 
 const updatePicture = (picture) => {
     const {id, comments, likes} = picture;
     const pictureElement = document.querySelector(`.picture[data-id="${id}"]`);
-    if  (pictureElement) {
-        pictureElement.querySelector('.picture__comments').textContent = comments.length;
+    if (pictureElement) {
         pictureElement.querySelector('.picture__likes').textContent = likes.length;
+        pictureElement.querySelector('.picture__comments').textContent = comments.length;
     }
 }
 
@@ -41,27 +50,6 @@ const clearPictureList = () => {
 }
 
 export {renderPicturesList, updatePicture, clearPictureList};
-
-// const updatePictureList = (list) => {
-//     const pictureElement = pictureTemplate.cloneNode(true);
-//     const pictureNew = list.at(-1);
-//     pictureElement.dataset.id = pictureNew.id;
-//     pictureElement.querySelector('.picture__img').setAttribute('src', `http://localhost:80/uploads/pictures/${pictureNew.url}`);
-//     // TODO: вынести в функцию
-//     pictureElement.querySelector('.picture__likes').textContent = pictureNew.likes.length;
-//     pictureElement.querySelector('.picture__comments').textContent = pictureNew.comments.length;
-//     pictureListElement.append(pictureElement);
-
-//     pictureListElement.addEventListener('click', (evt) => {
-//         const pictureElement = evt.target.closest('.picture');
-//         if (pictureElement) {
-//             const picture = list.find(picture => picture.id === +pictureElement.dataset.id);
-//             openPreviewModal(picture);
-//         }
-//     });
-// }
-
-
 
 // const test1 = function (value1, value2) {
 //     this.x = 666;

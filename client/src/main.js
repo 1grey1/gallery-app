@@ -3,13 +3,12 @@ import {renderCommentList} from './comment-list.js';
 import {setLikesCountClick, updateLikesCount} from './likes.js';
 import {closeUploadModal} from './upload-modal.js';
 import {setUploadFormSabmit} from './upload-form.js';
-import {updatePicture, clearPictureList} from './picture-list.js';
-import {sortedPictureList} from './sorted.js';
+import {updatePicture} from './picture-list.js';
+import {sortedPictureList} from './filters.js';
 import {start, restart} from './start.js';
 import {getData} from './api.js';
 import {AppStorage, Url} from './const.js';
 import {renderPicturesList} from './picture-list.js';
-import {getCurrentPicture} from './storage.js';
 import './upload-modal.js';
 import './user/main.js';
 
@@ -22,8 +21,7 @@ getData(Url.PICTURE.GET, (response) => {
 setUploadFormSabmit(() => {
     closeUploadModal();
     getData(Url.PICTURE.GET, (response) => {
-        clearPictureList();
-        renderPicturesList(JSON.parse(response));
+        renderPicturesList(JSON.parse(response), true);
     });
     // restart();
 });

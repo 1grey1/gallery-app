@@ -39,7 +39,7 @@ const AppStorage = {
 const Filter = {
     DEFAULT: 'default',
     RANDOM: 'random',
-    DISCUSSED: 'discused'
+    DISCUSSED: 'discussed'
 };
 
 export {
