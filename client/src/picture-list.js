@@ -1,47 +1,15 @@
+import {Url} from "./const.js";
 import {openPreviewModal} from "./preview-modal.js";
-
+import {setImageEffect} from "./effects.js";
+let pictures = [];
 const pictureListElement = document.querySelector('.pictures');
 const pictureTemplate = document.getElementById('picture')
     .content
     .querySelector('.picture');
 
-    
-const renderPicturesList = (pictures, sort = false) => {
-    if (sort) {
-        clearPictureList();
-    }
-    
-    const evr = (evt) => {
-        pictureListElement.removeEventListener('click', evr);
-        const pictureElement = evt.target.closest('.picture');
-        if (pictureElement) {
-            const picture = pictures.find(picture => picture.id === +pictureElement.dataset.id);
-            openPreviewModal(picture);
-            pictureListElement.addEventListener('click', evr);
-        }
-    }
-    
-    for (const {id, url, likes, comments} of pictures) {
-        const pictureElement = pictureTemplate.cloneNode(true);
-        
-        pictureElement.dataset.id = id;
-        pictureElement.querySelector('.picture__img').setAttribute('src', `http://localhost:80/uploads/pictures/${url}`);
-        // TODO: вынести в функцию
-        pictureElement.querySelector('.picture__likes').textContent = likes.length;
-        pictureElement.querySelector('.picture__comments').textContent = comments.length;
-        pictureListElement.append(pictureElement);
-    }
-
-    pictureListElement.addEventListener('click', evr);
-}
-
-const updatePicture = (picture) => {
-    const {id, comments, likes} = picture;
-    const pictureElement = document.querySelector(`.picture[data-id="${id}"]`);
-    if (pictureElement) {
-        pictureElement.querySelector('.picture__likes').textContent = likes.length;
-        pictureElement.querySelector('.picture__comments').textContent = comments.length;
-    }
+const updatePictureCounters = (pictureElement, {likes, comments}) => {
+    pictureElement.querySelector('.picture__likes').textContent = likes.length;
+    pictureElement.querySelector('.picture__comments').textContent = comments.length;
 }
 
 const clearPictureList = () => {
@@ -49,13 +17,49 @@ const clearPictureList = () => {
     pictureArray.forEach((picture) => picture.remove());
 }
 
-export {renderPicturesList, updatePicture, clearPictureList};
+const renderPicturesList = (array, sort = false) => {
+    if (sort) {
+        clearPictureList();
+    }
 
-// const test1 = function (value1, value2) {
-//     this.x = 666;
-// };
+    if (pictures.length <= array.length) {
+        pictures = array.slice();
+    }
 
-// const test2 = function () {};
+    const onPictureElementClick = (evt) => {
+        const pictureElement = evt.target.closest('.picture');
+        if (pictureElement) {
+            const picture = pictures.find(picture => picture.id === +pictureElement.dataset.id);
+            openPreviewModal(picture);
+            pictureListElement.addEventListener('click', onPictureElementClick);
+        }
+    }
+    pictureListElement.removeEventListener('click', onPictureElementClick);
 
-// test1.call(test2, 10, 20);
-// test1.apply(test2, [10, 20]);
+    for (const picture of pictures) {
+        const pictureElement = pictureTemplate.cloneNode(true);
+        pictureElement.dataset.id = picture.id;
+
+        pictureElement.querySelector('.picture__img').setAttribute('src', Url.UPLOAD.PICTURE + picture.url);
+        updatePictureCounters(pictureElement, picture);
+        setImageEffect(pictureElement, picture);
+        pictureListElement.append(pictureElement);
+    }
+
+    pictureListElement.addEventListener('click', onPictureElementClick);
+}
+
+const updatePicture = (picture) => {
+    const pictureElement = document.querySelector(`.picture[data-id="${picture.id}"]`);
+
+    if (pictureElement) {
+        updatePictureCounters(pictureElement, picture);
+    }
+}
+
+export {
+    pictures,
+    renderPicturesList,
+    updatePicture,
+    clearPictureList
+};

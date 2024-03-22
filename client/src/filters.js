@@ -1,5 +1,5 @@
 import {getRandomArrayElement} from './util.js';
-import {renderPicturesList} from './picture-list.js';
+import {renderPicturesList, pictures} from './picture-list.js';
 import {Filter} from './const.js';
 
 const filterList = document.querySelector('.img-filters--inactive');
@@ -17,7 +17,7 @@ const ubdateBtnClassList = (buttonId) => {
         .classList.add('img-filters__button--active'); 
 }
 
-const sortedPictureList = (pictures) => {
+const sortedPictureList = () => {
     filterList.style.opacity = '1';
 
     filtersFormElement.addEventListener('click', (evt) => {

@@ -3,6 +3,7 @@ import {Url, AppStorage} from './const.js';
 import {getUser} from './storage.js';
 import {updateLikesCount} from './likes.js';
 import {showPictureHastags} from './hashtag.js';
+import {setImageEffect} from './effects.js';
 
 const previewModalElement = document.querySelector('.big-picture');
 const previewModalCloseElement = document.getElementById('picture-cancel');
@@ -26,6 +27,7 @@ const onHashtagBtnClick = () => {
 
 const openPreviewModal = (picture) => {
     localStorage.setItem(AppStorage.PICTURE, JSON.stringify(picture));
+    setImageEffect(previewModalElement, picture);
     updateLikesCount(picture.likes);
 
     // previewModalImgElement.setAttribute('src', Url.UPLOAD.PICTURE + picture.url);

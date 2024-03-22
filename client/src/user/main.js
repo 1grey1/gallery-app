@@ -6,18 +6,23 @@ import {updatePageHeader} from './page-header.js';
 import {closeLoginModal} from './login-modal.js';
 import {setLogoutBtnClick} from './logout.js';
 import {AppStorage} from '../const.js';
+import {start} from '../start.js'
 
 setLoginFormSubmit(
     (token) => {
         closeLoginModal();
         localStorage.setItem(AppStorage.ACCESS_TOKEN, JSON.stringify(token));
         updatePageHeader();
-    }, 
+        start();
+    },
     renderValidationErrors
-);
-
+    );
+    
 setSignupFormSubmit(
-    closeSignupModal,
+    () => {
+        closeSignupModal();
+        start();
+    },
     renderValidationErrors
 );
 

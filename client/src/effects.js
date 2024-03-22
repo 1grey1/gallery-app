@@ -37,7 +37,7 @@ const onSliderUpdate = (_, handle, unencoded) => {
     }
 
     const effectName = document.querySelector('[name=effect_id]:checked').getAttribute('id').split('-')[1];
-    const effect = EFFECTS.find(effect => effect.name === effectName);
+    const effect = EFFECTS.find((effect) => effect.name === effectName);
 
     if (effectName !== NONE_EFFECT_KEY) {
         const filterValue = `${effect.css_filter}(${unencoded[handle] + (effect.unit ?? '')})`;
@@ -75,7 +75,19 @@ const onEffectsRadioChange = (evt) => {
     }
 }
 
+const setImageEffect = (pictureElement, picture) => {
+    const effects = JSON.parse(localStorage.getItem(AppStorage.EFFECTS));
+    const filter = effects.find((effect) => effect.id === picture.effect_id);
+    const pictureImgElement = pictureElement.querySelector('img');
+    if (picture.effect_level !== null) {
+        pictureImgElement.style.filter = `${filter.css_filter}(${picture.effect_level}${filter.unit ?? ''})`;
+    }else {
+        pictureImgElement.style.filter = '';
+    }
+}
+
 export {
     onEffectsRadioChange,
-    onSliderUpdate
+    onSliderUpdate,
+    setImageEffect
 };

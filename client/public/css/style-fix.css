@@ -1,3 +1,7 @@
+:root {
+    --comment-count-offset: 5px;
+}
+
 .img-upload__overlay {
     padding-bottom: 60px;
 }
@@ -113,7 +117,14 @@ label[for=upload-file]:hover {
     justify-content: center;
 }
 
-
 details summary::-webkit-details-marker {
     display: block;
+}
+
+.comments-count--rendered {
+    margin-right: var(--comment-count-offset);
+}
+
+.comments-count {
+    margin: 0 var(--comment-count-offset);
 }
