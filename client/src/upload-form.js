@@ -13,7 +13,6 @@ const submitBtnElement = uploadFormElement.querySelector('[type=submit]');
  * @return {undefined}
  */
 const onDescTextareaInput = (evt) => {
-    console.log(evt);
     const valueLength = evt.target.value.length;
     let error = '';
 
@@ -73,7 +72,7 @@ const setUploadFormSabmit = (onSuccess, onFail) => {
         const formData = new FormData(uploadFormElement);
         formData.set('user_id', user.id);
 
-        blockButton(submitBtnElement, 'Публикация');
+        blockButton(submitBtnElement, 'Публикация', false);
         window.setTimeout(() => {
             sendData(
                 Url.PICTURE.POST,
@@ -84,7 +83,7 @@ const setUploadFormSabmit = (onSuccess, onFail) => {
                 () => {},
                 formData
             );
-        }, 2000);
+        }, 0);
     })
 };
 

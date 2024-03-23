@@ -2,7 +2,7 @@ const spinnerTemplate = document.getElementById('spinner')
     .content
     .querySelector('.spinner-border');
 
-const blockButton = (buttonElement, text) => {
+const blockButton = (buttonElement, text, renderSpiner = true) => {
     buttonElement.setAttribute('disabled', '');
     buttonElement.style.cursor = 'not-allowed';
 
@@ -10,7 +10,9 @@ const blockButton = (buttonElement, text) => {
         const spinnerElement = spinnerTemplate.cloneNode(true);
         blockButton.oldText = buttonElement.innerText;
         buttonElement.innerHTML = '';
-        buttonElement.insertAdjacentElement('beforeend', spinnerElement);
+        if (renderSpiner) {
+            buttonElement.insertAdjacentElement('beforeend', spinnerElement);
+        }
         buttonElement.insertAdjacentText('beforeend', `${text}...`);
     }
 };
@@ -24,4 +26,7 @@ const unblockButton = (buttonElement) => {
     buttonElement.style.cursor = 'pointer';
 };
 
-export {blockButton, unblockButton};
+export {
+    blockButton,
+    unblockButton
+};

@@ -7,8 +7,10 @@ import {setUploadFormSabmit} from './upload-form.js';
 import {updatePicture} from './picture-list.js';
 import {start, restart} from './start.js';
 import {getData} from './api.js';
+import {renderMassage} from "./massage";
 import {AppStorage, Url} from './const.js';
 import {renderPicturesList, pictures} from './picture-list.js';
+import {MassageType} from "./enumJs";
 import './upload-modal.js';
 import './user/main.js';
 
@@ -18,8 +20,10 @@ sortedPictureList();
 
 setUploadFormSabmit(() => {
     closeUploadModal();
-    getData(Url.PICTURE.GET, (response) => {
-        renderPicturesList(JSON.parse(response), true);
+    renderMassage(MassageType.SUCCESS, () => {
+        getData(Url.PICTURE.GET, (response) => {
+            renderPicturesList(JSON.parse(response), true);
+        });
     });
 });
 
