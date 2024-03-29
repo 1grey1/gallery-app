@@ -8,12 +8,14 @@ const modalSuccessTemplate = document.getElementById('success')
     .content
     .querySelector('.success');
 
-
-const renderSuccessMassage = () => {
+const renderSuccessMassage = (callback) => {
     const modalSuccessElement = modalSuccessTemplate.cloneNode(true);
     const buttonSuccessElement = modalSuccessElement.querySelector('.success__button');
-    document.body.append(modalSuccessElement);
+
     buttonSuccessElement.addEventListener('click', closeSuccessMassage);
+    document.querySelectorAll('.modal-backdrop').forEach((bd) => bd.remove());
+    document.body.append(modalSuccessElement);
+    callback();
 }
 
 const renderMassage = (type, callback) => {
@@ -30,17 +32,16 @@ const renderMassage = (type, callback) => {
 
         window.setTimeout(() => {
             loaderElement.remove();
-            renderSuccessMassage();
+            renderSuccessMassage(callback);
         // TODO: вынести в CSS переменную
         },2000);
     }, 100);
 }
 
 const closeSuccessMassage = () => {
-    const modalSuccessElement = modalSuccessTemplate.cloneNode(true);
-    const buttonSuccessElement = modalSuccessElement.querySelector('.success__button');
-    modalSuccessElement.classList.add('hidden');
-    buttonSuccessElement.removeEventListener('click', closeSuccessMassage);
+    document.querySelectorAll('.success').forEach((bd) => bd.remove());
+    document.querySelectorAll('.modal-backdrop').forEach((bd) => bd.remove());
+    modalSuccessTemplate.querySelector('.success__button').removeEventListener('click', closeSuccessMassage);
 }
 
 export {renderMassage}
