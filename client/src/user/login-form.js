@@ -1,4 +1,3 @@
-// import {renderEffectsList} from '../effect-list.js';
 import {createToken} from './user-api.js';
 import {blockButton, unblockButton} from './util.js';
 
@@ -12,14 +11,19 @@ const setLoginFormSubmit = (onSuccess, onFail) => {
 
         blockButton(submitBtnElement, 'Вход');
         window.setTimeout(() => {
-            createToken(formData, onSuccess, (errors, LOGIN_FIELDS, loginFormElement) => {
-                onFail(errors, LOGIN_FIELDS, loginFormElement);
-                unblockButton(submitBtnElement);
-            });
+            createToken(
+                formData,
+                (token) => {
+                    onSuccess(token);
+                    unblockButton(submitBtnElement);
+                },
+                (errors, LOGIN_FIELDS, loginFormElement) => {
+                    onFail(errors, LOGIN_FIELDS, loginFormElement);
+                    unblockButton(submitBtnElement);
+                }
+            );
         }, 2000);
     });
-
-    // renderEffectsList();
-}
+};
 
 export {setLoginFormSubmit};

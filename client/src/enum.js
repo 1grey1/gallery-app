@@ -1,8 +1,8 @@
-const MassageType = {
+const MessageType = {
     ERROR: 'error',
     SUCCESS: 'success'
 }
 
 export {
-    MassageType
+    MessageType
 }

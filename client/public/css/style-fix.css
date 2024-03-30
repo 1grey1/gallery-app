@@ -94,7 +94,7 @@ label[for=upload-file]:hover {
 
 .img-upload__message .progress .progress-bar {
     width: 0;
-    transition-duration: 2000ms;
+    transition-duration: var(--progress-bar-transition);
 }
 
 .img-upload__overlay .img-upload__wrapper {

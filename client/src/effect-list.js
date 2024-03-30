@@ -1,17 +1,18 @@
 import {AppStorage} from './const.js';
 
-const EFFECTS = JSON.parse(localStorage.getItem(AppStorage.EFFECTS));
 const effectListElement = document.querySelector('.effects__list');
 const effectTemlate = document.getElementById('effect-item')
     .content
     .querySelector('.effects__item');
 
 const renderEffectsList = () => {
+    const effects = JSON.parse(localStorage.getItem(AppStorage.EFFECTS));
+
     if (!localStorage.getItem(AppStorage.ACCESS_TOKEN)) {
         return;
     }
 
-    for (const {name: effectName, id: effectId} of EFFECTS) {
+    for (const {name: effectName, id: effectId} of effects) {
         const effectElement = effectTemlate.cloneNode(true);
 
         if (effectName === 'none') {

@@ -17,7 +17,7 @@ const ubdateBtnClassList = (buttonId) => {
         .classList.add('img-filters__button--active'); 
 }
 
-const sortedPictureList = () => {
+const setFilterBtnClick = () => {
     filterList.style.opacity = '1';
 
     filtersFormElement.addEventListener('click', (evt) => {
@@ -50,4 +50,4 @@ const randomPictureArray = (pictures) => {
     return Array.from(uniqueObject);
 };
 
-export {sortedPictureList};
+export {setFilterBtnClick};

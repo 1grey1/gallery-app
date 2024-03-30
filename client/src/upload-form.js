@@ -59,7 +59,7 @@ const onHashtagsInput = (evt) => {
     evt.target.reportValidity();
 };
 
-const setUploadFormSabmit = (onSuccess, onFail) => {
+const setUploadFormSubmit = (onSuccess, onFail) => {
     uploadFormElement.addEventListener('submit', (evt) => {
         evt.preventDefault();
 
@@ -80,7 +80,9 @@ const setUploadFormSabmit = (onSuccess, onFail) => {
                     unblockButton(submitBtnElement);
                     onSuccess();
                 },
-                () => {},
+                () => {
+                    onFail();
+                },
                 formData
             );
         }, 0);
@@ -90,5 +92,5 @@ const setUploadFormSabmit = (onSuccess, onFail) => {
 export {
     onDescTextareaInput,
     onHashtagsInput,
-    setUploadFormSabmit
+    setUploadFormSubmit
 };

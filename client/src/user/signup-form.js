@@ -11,10 +11,17 @@ const setSignupFormSubmit = (onSuccess, onFail) => {
 
         blockButton(submitBtnElement, 'Регистрация');
         window.setTimeout(() => {
-            createUser(formData, onSuccess, (errors, SIGNUP_FIELDS, signupFormElement) => {
-                onFail(errors, SIGNUP_FIELDS, signupFormElement);
-                unblockButton(submitBtnElement);
-            });
+            createUser(
+                formData,
+                () => {
+                    onSuccess();
+                    unblockButton(submitBtnElement);
+                },
+                (errors, SIGNUP_FIELDS, signupFormElement) => {
+                    onFail(errors, SIGNUP_FIELDS, signupFormElement);
+                    unblockButton(submitBtnElement);
+                }
+            );
         }, 2000);
     });
 }

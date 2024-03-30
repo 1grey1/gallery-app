@@ -1,26 +1,23 @@
 import {setCommentFormSabmit} from './comment-form.js';
 import {renderCommentList} from './comment-list.js';
-import {sortedPictureList} from './filters.js';
 import {setLikesCountClick, updateLikesCount} from './likes.js';
 import {closeUploadModal} from './upload-modal.js';
-import {setUploadFormSabmit} from './upload-form.js';
+import {setUploadFormSubmit} from './upload-form.js';
 import {updatePicture} from './picture-list.js';
-import {start, restart} from './start.js';
+import {start} from './start.js';
 import {getData} from './api.js';
-import {renderMassage} from "./massage";
+import {renderProgressBar} from "./message.js";
 import {AppStorage, Url} from './const.js';
 import {renderPicturesList, pictures} from './picture-list.js';
-import {MassageType} from "./enumJs";
+import {MessageType} from "./enum.js";
 import './upload-modal.js';
 import './user/main.js';
 
 start();
 
-sortedPictureList();
-
-setUploadFormSabmit(() => {
+setUploadFormSubmit(() => {
     closeUploadModal();
-    renderMassage(MassageType.SUCCESS, () => {
+    renderProgressBar(MessageType.SUCCESS, () => {
         getData(Url.PICTURE.GET, (response) => {
             renderPicturesList(JSON.parse(response), true);
         });

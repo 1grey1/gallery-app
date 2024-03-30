@@ -3,9 +3,11 @@ import {renderEffectsList} from './effect-list.js';
 import {renderPicturesList} from './picture-list.js';
 import {getData} from './api.js';
 import {Url, AppStorage} from './const.js';
+import {setFilterBtnClick} from "./filters";
 
 const start = () => {
     updatePageHeader();
+
     getData(Url.EFFECT.GET, (response) => {
         const data = JSON.parse(response);
         localStorage.setItem(AppStorage.EFFECTS, JSON.stringify(data));
@@ -14,11 +16,8 @@ const start = () => {
 
     getData(Url.PICTURE.GET, (response) => {
         renderPicturesList(JSON.parse(response));
+        setFilterBtnClick();
     });
 }
 
-const restart = () => {
-
-}
-
-export {start,restart};
+export {start};

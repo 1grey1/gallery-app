@@ -6,7 +6,7 @@ import {updatePageHeader} from './page-header.js';
 import {closeLoginModal} from './login-modal.js';
 import {setLogoutBtnClick} from './logout.js';
 import {AppStorage} from '../const.js';
-import {start} from '../start.js'
+import {start} from '../start.js';
 
 setLoginFormSubmit(
     (token) => {
@@ -16,7 +16,7 @@ setLoginFormSubmit(
         start();
     },
     renderValidationErrors
-    );
+);
     
 setSignupFormSubmit(
     () => {
