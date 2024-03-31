@@ -17,6 +17,14 @@ const clearPictureList = () => {
     pictureArray.forEach((picture) => picture.remove());
 }
 
+const onPictureElementClick = (evt) => {
+    const pictureElement = evt.target.closest('.picture');
+    if (pictureElement) {
+        const picture = pictures.find(picture => picture.id === +pictureElement.dataset.id);
+        openPreviewModal(picture);
+    }
+}
+
 const renderPicturesList = (array, sort = false) => {
     if (sort) {
         clearPictureList();
@@ -26,15 +34,6 @@ const renderPicturesList = (array, sort = false) => {
         pictures = array.slice();
     }
 
-    const onPictureElementClick = (evt) => {
-        const pictureElement = evt.target.closest('.picture');
-        if (pictureElement) {
-            const picture = pictures.find(picture => picture.id === +pictureElement.dataset.id);
-            openPreviewModal(picture);
-            pictureListElement.addEventListener('click', onPictureElementClick);
-        }
-    }
-    pictureListElement.removeEventListener('click', onPictureElementClick);
 
     for (const picture of pictures) {
         const pictureElement = pictureTemplate.cloneNode(true);
