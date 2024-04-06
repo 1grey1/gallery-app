@@ -12,6 +12,8 @@ const updatePageHeader = () => {
         userAvatarElement.src = Url.UPLOAD.AVATAR + user.avatar;
         userNameElement.textContent = user.name;
     }
+
+    return Boolean(accessToken);
 }
 
 export {updatePageHeader};

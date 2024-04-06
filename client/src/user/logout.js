@@ -2,9 +2,11 @@ import {deleteToken} from './user-api.js';
 import {blockButton, unblockButton} from './util.js';
 import {AppStorage} from '../const.js';
 import {clearEntityList} from '../util.js';
+import {clouseFilterBtnClick} from "../filters.js";
 
 
 const logoutBtnElement = document.getElementById('logout-btn');
+const uploadBtnElement = document.querySelector('.img-upload__label');
 
 const setLogoutBtnClick = (onSuccess) => {
     logoutBtnElement.addEventListener('click', () => {
@@ -18,7 +20,8 @@ const setLogoutBtnClick = (onSuccess) => {
         window.setTimeout(() => {
             deleteToken(token, id, () => {
                 clearEntityList('.picture');
-                document.querySelector('.img-filters--inactive').style.opacity = '0';
+                clouseFilterBtnClick();
+                uploadBtnElement.style.opacity = 0;
                 onSuccess();
                 unblockButton(logoutBtnElement);
             });

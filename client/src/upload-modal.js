@@ -1,6 +1,7 @@
 import {zoomPlus, zoomMinus} from './zoom.js';
 import {onSliderUpdate, onEffectsRadioChange} from './effects.js';
 import {onDescTextareaInput, onHashtagsInput} from './upload-form.js';
+import {updatePageHeader} from "./user/page-header";
 
 const uploadModalElement = document.querySelector('.img-upload__overlay');
 const uploadModalOpenElement = document.getElementById('upload-file');
@@ -96,7 +97,9 @@ function closeUploadModal() {
 
 uploadModalOpenElement.addEventListener('change', () => {
     const file = uploadModalOpenElement.files[0];
-    openUploadModal(file);
+    if (updatePageHeader()) {
+        openUploadModal(file);
+    }
 });
 
 export {closeUploadModal};

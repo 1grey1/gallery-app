@@ -15,7 +15,7 @@
 .main-header .main-header-nav .logo {
     display: flex;
     align-items: center;
-    font-family: 'Rammetto One', cursive;
+    font-family: 'Josefin Sans', cursive;
     font-size: 18px;
     font-weight: 400;
     color: #000;
@@ -60,6 +60,7 @@ body[data-auth="true"] .main-header-nav #user-menu {
 
 .main-header .main-header-nav #user-menu li #username {
     margin-left: 10px;
+    font-family: 'Josefin Sans', cursive;
 }
 
 .main-header .main-header-nav #user-menu li #username span {

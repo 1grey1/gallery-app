@@ -17,29 +17,6 @@ const ubdateBtnClassList = (buttonId) => {
         .classList.add('img-filters__button--active'); 
 }
 
-const setFilterBtnClick = () => {
-    filterList.style.opacity = '1';
-
-    filtersFormElement.addEventListener('click', (evt) => {
-        const filterName = evt.target.id.split('-')[1];
-        ubdateBtnClassList(evt.target.id);
-
-        switch (filterName) {
-            case Filter.DEFAULT:
-                renderPicturesList(pictures.sort((a, b) => a.id - b.id), true);
-                break;
-
-            case Filter.RANDOM:
-                renderPicturesList(randomPictureArray(pictures), true);
-                break;
-
-            case Filter.DISCUSSED:
-                renderPicturesList(pictures.sort((a, b) => b.comments.length - a.comments.length), true);
-                break;
-        }
-    });
-}
-
 const randomPictureArray = (pictures) => {
     const uniqueObject = new Set();
 
@@ -50,4 +27,36 @@ const randomPictureArray = (pictures) => {
     return Array.from(uniqueObject);
 };
 
-export {setFilterBtnClick};
+const filterBtnClick = (evt) => {
+    const filterName = evt.target.id.split('-')[1];
+    ubdateBtnClassList(evt.target.id);
+
+    switch (filterName) {
+        case Filter.DEFAULT:
+            renderPicturesList(pictures.sort((a, b) => a.id - b.id), true);
+            break;
+
+        case Filter.RANDOM:
+            renderPicturesList(randomPictureArray(pictures), true);
+            break;
+
+        case Filter.DISCUSSED:
+            renderPicturesList(pictures.sort((a, b) => b.comments.length - a.comments.length), true);
+            break;
+    }
+}
+
+const setFilterBtnClick = () => {
+    filterList.style.opacity = '1';
+    filtersFormElement.addEventListener('click', filterBtnClick);
+}
+
+const clouseFilterBtnClick = () => {
+    filterList.style.opacity = '0';
+    filtersFormElement.removeEventListener('click', filterBtnClick);
+}
+
+export {
+    setFilterBtnClick,
+    clouseFilterBtnClick
+};
