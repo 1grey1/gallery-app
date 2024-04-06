@@ -47,12 +47,12 @@ const filterBtnClick = (evt) => {
 }
 
 const setFilterBtnClick = () => {
-    filterList.style.opacity = '1';
+    filterList.style = 'opacity: 1';
     filtersFormElement.addEventListener('click', filterBtnClick);
 }
 
 const clouseFilterBtnClick = () => {
-    filterList.style.opacity = '0';
+    filterList.style = 'opacity: 0';
     filtersFormElement.removeEventListener('click', filterBtnClick);
 }
 

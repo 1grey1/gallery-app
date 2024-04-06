@@ -33,7 +33,6 @@ label[for=upload-file] {
     background-color: #fff;
     border-radius: 100%;
     transition-duration: 200ms;
-    opacity: 0;
 }
 
 label[for=upload-file]:hover {

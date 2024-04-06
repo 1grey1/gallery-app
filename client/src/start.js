@@ -18,7 +18,7 @@ const start = () => {
             setFilterBtnClick();
         });
 
-        document.querySelector('.img-upload__label').style.opacity = 1;
+        document.querySelector('.img-upload__label').style.opacity = '1';
     }
 }
 

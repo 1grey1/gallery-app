@@ -21,7 +21,7 @@ const setLogoutBtnClick = (onSuccess) => {
             deleteToken(token, id, () => {
                 clearEntityList('.picture');
                 clouseFilterBtnClick();
-                uploadBtnElement.style.opacity = 0;
+                uploadBtnElement.style.opacity = '0';
                 onSuccess();
                 unblockButton(logoutBtnElement);
             });
