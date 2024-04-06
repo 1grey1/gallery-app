@@ -1,7 +1,8 @@
 import {deleteToken} from './user-api.js';
 import {blockButton, unblockButton} from './util.js';
 import {AppStorage} from '../const.js';
-import {clearPictureList} from '../picture-list';
+import {clearEntityList} from '../util.js';
+
 
 const logoutBtnElement = document.getElementById('logout-btn');
 
@@ -16,7 +17,7 @@ const setLogoutBtnClick = (onSuccess) => {
         blockButton(logoutBtnElement, 'Выход');
         window.setTimeout(() => {
             deleteToken(token, id, () => {
-                clearPictureList();
+                clearEntityList('.picture');
                 document.querySelector('.img-filters--inactive').style.opacity = '0';
                 onSuccess();
                 unblockButton(logoutBtnElement);

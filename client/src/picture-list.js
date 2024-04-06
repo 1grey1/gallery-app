@@ -1,6 +1,7 @@
 import {Url} from "./const.js";
 import {openPreviewModal} from "./preview-modal.js";
 import {setImageEffect} from "./effects.js";
+import {clearEntityList} from "./util";
 let pictures = [];
 const pictureListElement = document.querySelector('.pictures');
 const pictureTemplate = document.getElementById('picture')
@@ -10,11 +11,6 @@ const pictureTemplate = document.getElementById('picture')
 const updatePictureCounters = (pictureElement, {likes, comments}) => {
     pictureElement.querySelector('.picture__likes').textContent = likes.length;
     pictureElement.querySelector('.picture__comments').textContent = comments.length;
-}
-
-const clearPictureList = () => {
-    const pictureArray = Array.from(document.getElementsByClassName('picture'));
-    pictureArray.forEach((picture) => picture.remove());
 }
 
 const onPictureElementClick = (evt) => {
@@ -27,7 +23,7 @@ const onPictureElementClick = (evt) => {
 
 const renderPicturesList = (array, sort = false) => {
     if (sort) {
-        clearPictureList();
+        clearEntityList('.picture');
     }
 
     if (pictures.length <= array.length) {
@@ -58,6 +54,5 @@ const updatePicture = (picture) => {
 export {
     pictures,
     renderPicturesList,
-    updatePicture,
-    clearPictureList
+    updatePicture
 };

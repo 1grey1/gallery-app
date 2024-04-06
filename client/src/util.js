@@ -8,7 +8,13 @@ const getRandomArrayElement = (array) => {
     return array[getRandomInt(0, array.length - 1)];
 }
 
+const clearEntityList = (listElementSelector) => {
+    const listElements = document.querySelectorAll(listElementSelector);
+    listElements.forEach((element) => element.remove());
+}
+
 export {
     getRandomInt,
-    getRandomArrayElement
+    getRandomArrayElement,
+    clearEntityList
 };

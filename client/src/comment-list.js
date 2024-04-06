@@ -1,4 +1,5 @@
 import {Url} from './const.js';
+import {clearEntityList} from "./util";
 
 const totalCommentCountElement = document.querySelector('.comments-count');
 const renderedCommentCountElement = document.querySelector('.comments-count--rendered');
@@ -38,7 +39,7 @@ const renderComments = (comments, from, to) => {
 };
 
 const renderCommentList = (comments) => {
-    commentListElement.innerHTML = '';
+    clearEntityList('.social__comment');
 
     const to = Math.min(comments.length, COMMENT_COUNT_PER_STEP);
 
