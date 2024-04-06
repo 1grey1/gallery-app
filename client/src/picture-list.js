@@ -34,7 +34,6 @@ const renderPicturesList = (array, sort = false) => {
         pictures = array.slice();
     }
 
-
     for (const picture of pictures) {
         const pictureElement = pictureTemplate.cloneNode(true);
         pictureElement.dataset.id = picture.id;

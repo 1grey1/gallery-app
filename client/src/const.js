@@ -1,32 +1,32 @@
 const scheme = 'http';
-const host = 'localhost';
-const port = '80';
+const port = 80;
+const host = `localhost:${port}`;
 
 const Url = {
     ACCESS_TOKEN: {
-        POST: `${scheme}://${host}:${port}/token`,
-        DELETE: `${scheme}://${host}:${port}/logout/`
+        POST: `${scheme}://${host}/token`,
+        DELETE: `${scheme}://${host}/logout/`
     },
     COMMENT: {
-        POST: `${scheme}://${host}:${port}/comment`
+        POST: `${scheme}://${host}/comment`
     },
     EFFECT: {
-        GET: `${scheme}://${host}:${port}/effect`
+        GET: `${scheme}://${host}/effect`
     },
     LIKE: {
-        POST: `${scheme}://${host}:${port}/like`,
-        DELETE: `${scheme}://${host}:${port}/like/`
+        POST: `${scheme}://${host}/like`,
+        DELETE: `${scheme}://${host}/like/`
     },
     PICTURE: {
-        GET: `${scheme}://${host}:${port}/picture`,
-        POST: `${scheme}://${host}:${port}/picture`
+        GET: `${scheme}://${host}/picture`,
+        POST: `${scheme}://${host}/picture`
     },
     USER: {
-        POST: `${scheme}://${host}:${port}/user`
+        POST: `${scheme}://${host}/user`
     },
     UPLOAD: {
-        AVATAR: `${scheme}://${host}:${port}/uploads/avatars/`,
-        PICTURE: `${scheme}://${host}:${port}/uploads/pictures/`
+        AVATAR: `${scheme}://${host}/uploads/avatars/`,
+        PICTURE: `${scheme}://${host}/uploads/pictures/`
     }
 };
 

@@ -81,7 +81,7 @@ function openUploadModal(file) {
     }
 
     effectLevelSliderElement.noUiSlider.on('update', onSliderUpdate);
-};
+}
 
 function closeUploadModal() {
     uploadModalElement.classList.add('hidden');
@@ -90,9 +90,9 @@ function closeUploadModal() {
     for (const {element, event, callback} of handlers) {
         element.removeEventListener(event, callback);
     }
-
     effectLevelSliderElement.noUiSlider.off('update');
-};
+    uploadModalOpenElement.value = '';
+}
 
 uploadModalOpenElement.addEventListener('change', () => {
     const file = uploadModalOpenElement.files[0];
