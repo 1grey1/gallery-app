@@ -9,7 +9,7 @@ const setLoginFormSubmit = (onSuccess, onFail) => {
         evt.preventDefault();
         const formData = new FormData(loginFormElement);
 
-        blockButton(submitBtnElement, 'Вход');
+        blockButton(submitBtnElement, 'Entrance');
         window.setTimeout(() => {
             createToken(
                 formData,

@@ -16,7 +16,7 @@ const setLogoutBtnClick = (onSuccess) => {
 
         const {token, id} = JSON.parse(localStorage.getItem(AppStorage.ACCESS_TOKEN));
 
-        blockButton(logoutBtnElement, 'Выход');
+        blockButton(logoutBtnElement, 'Close');
         window.setTimeout(() => {
             deleteToken(token, id, () => {
                 clearEntityList('.picture');

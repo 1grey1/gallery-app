@@ -9,7 +9,7 @@ const setSignupFormSubmit = (onSuccess, onFail) => {
         evt.preventDefault();
         const formData = new FormData(signupFormElement);
 
-        blockButton(submitBtnElement, 'Регистрация');
+        blockButton(submitBtnElement, 'Registration');
         window.setTimeout(() => {
             createUser(
                 formData,

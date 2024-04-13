@@ -9,15 +9,15 @@
 
 .main-header .main-header-nav {
     display: flex;
-    height: 80px;
+    height: 70px;
 }
 
 .main-header .main-header-nav .logo {
     display: flex;
     align-items: center;
-    font-family: 'Josefin Sans', cursive;
-    font-size: 18px;
-    font-weight: 400;
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
     color: #000;
 }
 
@@ -44,14 +44,11 @@ body[data-auth="true"] .main-header-nav #user-menu {
 }
 
 .main-header .main-header-nav ul li:not(:first-child) {
-    margin-left: 30px;
+    margin-left: 20px;
 }
 
 .main-header .main-header-nav ul li a {
-    font-size: 18px;
-    font-weight: 400;
-    color: #000;
-    text-decoration: none;
+    font-family: 'Josefin Sans', sans-serif;
 }
 
 .main-header .main-header-nav #user-menu li:first-child {
@@ -60,7 +57,8 @@ body[data-auth="true"] .main-header-nav #user-menu {
 
 .main-header .main-header-nav #user-menu li #username {
     margin-left: 10px;
-    font-family: 'Josefin Sans', cursive;
+    color: #000;
+    font-weight: 600;
 }
 
 .main-header .main-header-nav #user-menu li #username span {
@@ -73,8 +71,13 @@ body[data-auth="true"] .main-header-nav #user-menu {
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    font-family: 'Josefin Sans', sans-serif;
 }
 
 .main-header .main-header-nav #user-menu li #logout-btn:disabled {
     pointer-events: all;
 }
+
+            /*.main-header, .main-header * {*/
+            /*    text-transform: none !important;*/
+            /*}*/

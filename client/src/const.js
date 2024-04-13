@@ -1,9 +1,9 @@
-// const scheme = 'http';
-// const port = 80;
-// const host = `localhost:${port}`;
+const scheme = 'http';
+const port = 80;
+const host = `localhost:${port}`;
 
-const scheme = 'https';
-const host = '1grey1-api.webdot.pro';
+// const scheme = 'https';
+// const host = '1grey1-api.webdot.pro';
 
 const Url = {
     ACCESS_TOKEN: {

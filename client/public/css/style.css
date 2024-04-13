@@ -961,19 +961,19 @@ main {
 }
 
 .contacts__link {
-  display: block;
+    display: block;
 
-  width: 29px;
-  height: 29px;
-  margin-left: 10px;
+    width: 29px;
+    height: 29px;
+    margin-left: 10px;
 
-  font-size: 0;
+    font-size: 0;
 
-  background-image: url("../img/sprite.png");
-  background-repeat: no-repeat;
+    background-image: url("../img/sprite.png");
+    background-repeat: no-repeat;
 
-  opacity: 0.6;
-  cursor: pointer;
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
 .contacts__link:hover,
