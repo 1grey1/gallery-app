@@ -3,6 +3,7 @@ import {openPreviewModal} from "./preview-modal.js";
 import {setImageEffect} from "./effects.js";
 import {clearEntityList} from "./util";
 let pictures = [];
+let lengthArray = 26;
 const pictureListElement = document.querySelector('.pictures');
 const pictureTemplate = document.getElementById('picture')
     .content
@@ -26,11 +27,9 @@ const renderPicturesList = (array, sort = false) => {
         clearEntityList('.picture');
     }
 
-    if (pictures.length <= array.length) {
-        pictures = array.slice();
-    }
+    pictures = array;
 
-    for (const picture of pictures) {
+    for (const picture of pictures.slice(lengthArray-26, lengthArray)) {
         const pictureElement = pictureTemplate.cloneNode(true);
         pictureElement.dataset.id = picture.id;
 
@@ -50,6 +49,17 @@ const updatePicture = (picture) => {
         updatePictureCounters(pictureElement, picture);
     }
 }
+
+window.addEventListener('scroll', function() {
+    console.log(document.documentElement.getBoundingClientRect().bottom);
+    let windowRelativeBottom = document.documentElement.getBoundingClientRect().bottom;
+
+    if ((windowRelativeBottom < document.documentElement.clientHeight + 100) && (pictures.length >= lengthArray)) {
+        lengthArray += 26;
+        renderPicturesList(pictures);
+    }
+
+});
 
 export {
     pictures,
