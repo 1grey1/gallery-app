@@ -20,6 +20,12 @@ const onModalEscKeydown = (evt) => {
     }
 };
 
+const onOverlayClick = (evt) => {
+    if (!evt.target.closest('.big-picture__preview')) {
+        closePreviewModal();
+    }
+};
+
 const onHashtagBtnClick = () => {
     const {hashtags} = JSON.parse(localStorage.getItem(AppStorage.PICTURE));
     showPictureHastags(hashtags.map(hashtag => hashtag.name));
@@ -41,6 +47,7 @@ const openPreviewModal = (picture) => {
 
     previewModalElement.classList.remove('hidden');
     previewModalCloseElement.addEventListener('click', closePreviewModal);
+    previewModalElement.addEventListener('click', onOverlayClick);
     document.addEventListener('keydown', onModalEscKeydown);
     hashtagBtnElement.addEventListener('click', onHashtagBtnClick);
 };
@@ -48,6 +55,7 @@ const openPreviewModal = (picture) => {
 const closePreviewModal = () => {
     previewModalElement.classList.add('hidden');
     previewModalCloseElement.removeEventListener('click', closePreviewModal);
+    previewModalElement.removeEventListener('click', onOverlayClick);
     document.removeEventListener('keydown', onModalEscKeydown);
     hashtagBtnElement.removeEventListener('click', onHashtagBtnClick);
 }

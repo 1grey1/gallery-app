@@ -21,6 +21,13 @@ const onModalEscKeydown = (evt) => {
     }
 };
 
+const onOverlayClick = (evt) => {
+    console.log(evt.target.className)
+    if (evt.target.className === 'img-upload__overlay') {
+        closeUploadModal();
+    }
+};
+
 const updateUploadPreview = (file) => {
     const reader = new FileReader();
 
@@ -39,6 +46,11 @@ const handlers = [
         element: uploadModalCloseElement,
         event: 'click',
         callback: closeUploadModal
+    },
+    {
+        element: uploadModalElement,
+        event: 'click',
+        callback: onOverlayClick
     },
     {
         element: document,

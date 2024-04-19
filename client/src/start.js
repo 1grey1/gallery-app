@@ -5,6 +5,11 @@ import {getData} from './api.js';
 import {Url, AppStorage} from './const.js';
 import {setFilterBtnClick} from "./filters";
 
+const guestMenu = document.getElementById('guest-menu');
+const mainHider = document.querySelector('.main-header-nav');
+const hiderElement =document.querySelector('.container');
+const main = document.querySelector('main');
+
 const start = () => {
     if (updatePageHeader()) {
         getData(Url.EFFECT.GET, (response) => {
@@ -22,4 +27,16 @@ const start = () => {
     }
 }
 
-export {start};
+const dontStart = () => {
+    guestMenu.remove();
+    mainHider.style.justifyContent = 'center';
+    hiderElement.style.width = 'auto';
+    document.querySelector('.img-upload').remove();
+    main.textContent = 'Зайди с компьюторной версии!!!';
+    main.style = 'display: flex; justify-content: center; align-items: center; height: 700px; color: rgba(238, 210, 30, 1); font-size: 20px'
+}
+
+export {
+    start,
+    dontStart
+};

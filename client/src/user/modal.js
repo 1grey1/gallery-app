@@ -30,7 +30,7 @@ const onOverlayClick = (evt) => {
     if (!evt.target.closest('.modal-dialog')) {
         closeModal(openModalElement);
     }
-}
+};
 
 const openModal = (modalElement) => {
     const modalBackdropElement = modalBackdropTemplate.cloneNode(true);
@@ -40,7 +40,12 @@ const openModal = (modalElement) => {
     window.setTimeout(() => {
         openModalElement.classList.add('show');
         document.body.classList.add('modal-open');
-        nameElement.textContent = 'WebdotApp-1 | Вход';
+        if (openModalElement === loginModalElement){
+            nameElement.textContent = 'WebdotApp-1 | Authorization';
+        }
+        if (openModalElement === signupModalElement) {
+            nameElement.textContent = 'WebdotApp-1 | Registration';
+        }
 
         openModalElement.querySelector('.btn-close').addEventListener('click', closeModal);
         openModalElement.addEventListener('click', onOverlayClick);

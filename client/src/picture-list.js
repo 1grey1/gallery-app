@@ -12,7 +12,7 @@ const pictureTemplate = document.getElementById('picture')
 const updatePictureCounters = (pictureElement, {likes, comments}) => {
     pictureElement.querySelector('.picture__likes').textContent = likes.length;
     pictureElement.querySelector('.picture__comments').textContent = comments.length;
-}
+};
 
 const onPictureElementClick = (evt) => {
     const pictureElement = evt.target.closest('.picture');
@@ -20,7 +20,7 @@ const onPictureElementClick = (evt) => {
         const picture = pictures.find(picture => picture.id === +pictureElement.dataset.id);
         openPreviewModal(picture);
     }
-}
+};
 
 const renderPicturesList = (array, sort = false) => {
     if (sort) {
@@ -40,7 +40,7 @@ const renderPicturesList = (array, sort = false) => {
     }
 
     pictureListElement.addEventListener('click', onPictureElementClick);
-}
+};
 
 const updatePicture = (picture) => {
     const pictureElement = document.querySelector(`.picture[data-id="${picture.id}"]`);
@@ -48,10 +48,9 @@ const updatePicture = (picture) => {
     if (pictureElement) {
         updatePictureCounters(pictureElement, picture);
     }
-}
+};
 
 window.addEventListener('scroll', function() {
-    console.log(document.documentElement.getBoundingClientRect().bottom);
     let windowRelativeBottom = document.documentElement.getBoundingClientRect().bottom;
 
     if ((windowRelativeBottom < document.documentElement.clientHeight + 100) && (pictures.length >= lengthArray)) {

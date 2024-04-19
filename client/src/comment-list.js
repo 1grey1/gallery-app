@@ -1,5 +1,6 @@
 import {Url} from './const.js';
 import {clearEntityList} from "./util";
+import {blockButton, unblockButton} from './user/util.js';
 
 const totalCommentCountElement = document.querySelector('.comments-count');
 const renderedCommentCountElement = document.querySelector('.comments-count--rendered');
@@ -17,11 +18,17 @@ const setLoaderClick = function (comments) {
     }
 
     this.onLoaderClick = () => {
-        renderComments(comments, renderedCommentCount, renderedCommentCount + COMMENT_COUNT_PER_STEP);
-        renderedCommentCount += COMMENT_COUNT_PER_STEP;
-        if (renderedCommentCount >= comments.length) {
-            showMoreButtonElement.classList.add('hidden');
-        }
+        blockButton(showMoreButtonElement, 'loading');
+        window.setTimeout(()=>{
+            unblockButton(showMoreButtonElement);
+            renderComments(comments, renderedCommentCount, renderedCommentCount + COMMENT_COUNT_PER_STEP);
+            renderedCommentCount += COMMENT_COUNT_PER_STEP;
+
+            if (renderedCommentCount >= comments.length) {
+                showMoreButtonElement.classList.add('hidden');
+            }
+        }, 500);
+
     };
 
     let renderedCommentCount = 5;
