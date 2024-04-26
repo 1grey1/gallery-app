@@ -2,6 +2,7 @@ import {zoomPlus, zoomMinus} from './zoom.js';
 import {onSliderUpdate, onEffectsRadioChange} from './effects.js';
 import {onDescTextareaInput, onHashtagsInput} from './upload-form.js';
 import {updatePageHeader} from "./user/page-header";
+import {getModalEscKeydownHandler, onModalOverlayClick} from "./modal-util";
 
 const uploadModalElement = document.querySelector('.img-upload__overlay');
 const uploadModalOpenElement = document.getElementById('upload-file');
@@ -15,18 +16,8 @@ const effectLevelSliderElement = document.querySelector('.effect-level__slider')
 const hashtagsInput = uploadModalElement.querySelector('.text__hashtags');
 const descriptionTextarea = uploadModalElement.querySelector('.text__description');
 
-const onModalEscKeydown = (evt) => {
-    if (evt.code === 'Escape') {
-        closeUploadModal();
-    }
-};
-
-const onOverlayClick = (evt) => {
-    console.log(evt.target.className)
-    if (evt.target.className === 'img-upload__overlay') {
-        closeUploadModal();
-    }
-};
+const onModalEscKeydown = getModalEscKeydownHandler(closeUploadModal);
+const onOverlayClick = onModalOverlayClick(closeUploadModal, 'img-upload__overlay');
 
 const updateUploadPreview = (file) => {
     const reader = new FileReader();

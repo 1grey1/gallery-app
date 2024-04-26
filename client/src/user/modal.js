@@ -1,3 +1,5 @@
+import {getModalEscKeydownHandler, onModalOverlayClick} from "../modal-util";
+
 const nameElement = document.querySelector('title');
 const loginModalElement = document.getElementById('login-modal');
 const signupModalElement = document.getElementById('signup-modal');
@@ -20,31 +22,30 @@ const evtModal = [
 
 let openModalElement;
 
-const onModalEscKeydown = (evt) => {
-    if (evt.code === 'Escape') {
-        closeModal(openModalElement);
-    }
-};
-
-const onOverlayClick = (evt) => {
-    if (!evt.target.closest('.modal-dialog')) {
-        closeModal(openModalElement);
-    }
-};
+const onModalEscKeydown = getModalEscKeydownHandler(() => {
+    closeModal(openModalElement);
+});
+const onOverlayClick = onModalOverlayClick(() => {
+    closeModal(openModalElement);
+}, 'modal-dialog');
 
 const openModal = (modalElement) => {
     const modalBackdropElement = modalBackdropTemplate.cloneNode(true);
     openModalElement = modalElement;
     openModalElement.insertAdjacentElement('afterend', modalBackdropElement);
     openModalElement.style.display = 'block';
+
     window.setTimeout(() => {
         openModalElement.classList.add('show');
         document.body.classList.add('modal-open');
-        if (openModalElement === loginModalElement){
-            nameElement.textContent = 'WebdotApp-1 | Authorization';
-        }
-        if (openModalElement === signupModalElement) {
-            nameElement.textContent = 'WebdotApp-1 | Registration';
+
+        switch (openModalElement) {
+            case loginModalElement:
+                nameElement.textContent = 'WebdotApp-1 | Authorization';
+                break;
+            case signupModalElement:
+                nameElement.textContent = 'WebdotApp-1 | Registration';
+                break;
         }
 
         openModalElement.querySelector('.btn-close').addEventListener('click', closeModal);
@@ -53,7 +54,7 @@ const openModal = (modalElement) => {
     }, 0);
 }
 
-const closeModal = () => {
+function closeModal() {
     openModalElement.classList.remove('show');
     window.setTimeout(() => {
         document.querySelectorAll('.modal-backdrop').forEach((bd) => bd.remove());

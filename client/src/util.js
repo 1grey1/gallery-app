@@ -13,8 +13,11 @@ const clearEntityList = (listElementSelector) => {
     listElements.forEach((element) => element.remove());
 }
 
+const checkMobileVersion = () => !window.matchMedia("(min-width: 599px)").matches;
+
 export {
     getRandomInt,
     getRandomArrayElement,
-    clearEntityList
+    clearEntityList,
+    checkMobileVersion
 };

@@ -4,7 +4,7 @@ import {setLikesCountClick, updateLikesCount} from './likes.js';
 import {closeUploadModal} from './upload-modal.js';
 import {setUploadFormSubmit} from './upload-form.js';
 import {updatePicture} from './picture-list.js';
-import {start, dontStart} from './start.js';
+import {start} from './start.js';
 import {getData} from './api.js';
 import {renderProgressBar} from "./message.js";
 import {AppStorage, Url} from './const.js';
@@ -13,13 +13,8 @@ import {MessageType} from "./enum.js";
 import './upload-modal.js';
 import './user/main.js';
 
-if (window.matchMedia("(min-width: 599px)").matches) {
-    start();
-} else {
-    dontStart();
-}
+start();
 
-console.log(window.matchMedia("(min-width: 599px)").matches)
 setUploadFormSubmit(() => {
     closeUploadModal();
     renderProgressBar(MessageType.SUCCESS, () => {

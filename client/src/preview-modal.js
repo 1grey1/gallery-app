@@ -4,6 +4,7 @@ import {getUser} from './storage.js';
 import {updateLikesCount} from './likes.js';
 import {showPictureHastags} from './hashtag.js';
 import {setImageEffect} from './effects.js';
+import {getModalEscKeydownHandler, onModalOverlayClick} from "./modal-util";
 
 const previewModalElement = document.querySelector('.big-picture');
 const previewModalCloseElement = document.getElementById('picture-cancel');
@@ -14,17 +15,8 @@ const totalCommentCountElement = previewModalElement.querySelector('.comments-co
 const previewModalDescElement = previewModalElement.querySelector('.social__caption');
 const hashtagBtnElement = previewModalElement.querySelector('.hashtag-btn');
 
-const onModalEscKeydown = (evt) => {
-    if (evt.code === 'Escape') {
-        closePreviewModal();
-    }
-};
-
-const onOverlayClick = (evt) => {
-    if (!evt.target.closest('.big-picture__preview')) {
-        closePreviewModal();
-    }
-};
+const onModalEscKeydown = getModalEscKeydownHandler(closePreviewModal);
+const onOverlayClick = onModalOverlayClick(closePreviewModal, 'big-picture__preview');
 
 const onHashtagBtnClick = () => {
     const {hashtags} = JSON.parse(localStorage.getItem(AppStorage.PICTURE));
@@ -52,7 +44,7 @@ const openPreviewModal = (picture) => {
     hashtagBtnElement.addEventListener('click', onHashtagBtnClick);
 };
 
-const closePreviewModal = () => {
+function closePreviewModal() {
     previewModalElement.classList.add('hidden');
     previewModalCloseElement.removeEventListener('click', closePreviewModal);
     previewModalElement.removeEventListener('click', onOverlayClick);

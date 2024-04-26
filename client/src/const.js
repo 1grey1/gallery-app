@@ -1,9 +1,9 @@
-// const scheme = 'http';
-// const port = 80;
-// const host = `localhost:${port}`;
+const scheme = 'http';
+const port = 80;
+const host = `localhost:${port}`;
 
-const scheme = 'https';
-const host = '1grey1-api.webdot.pro';
+// const scheme = 'https';
+// const host = '1grey1-api.webdot.pro';
 
 const Url = {
     ACCESS_TOKEN: {
@@ -45,8 +45,20 @@ const Filter = {
     DISCUSSED: 'discussed'
 };
 
+const MODAL_INPUT_SELECTORS = [
+    '#login-email',
+    '#login-password',
+    '#signup-email',
+    '#signup-password',
+    '#signup-username',
+    '.text__hashtags',
+    '.text__description',
+    '.social__footer-text'
+];
+
 export {
     Url,
     AppStorage,
-    Filter
+    Filter,
+    MODAL_INPUT_SELECTORS
 };
