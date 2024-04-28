@@ -1,9 +1,9 @@
 import {blockButton, unblockButton} from './user/util.js';
-import {sendData} from './api.js';
+import {sendData} from './api/base/xhr-api.js';
 import {AppStorage, Url} from './const.js';
 
 const commentFormElement = document.querySelector('#comment-form');
-const submitBtnElement = commentFormElement.querySelector('[type=submit]');;
+const submitBtnElement = commentFormElement.querySelector('[type=submit]');
 const commentInputElement = commentFormElement.querySelector('.social__footer-text');
 
 const setCommentFormSabmit = (onSuccess, onFail) => {
