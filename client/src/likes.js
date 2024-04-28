@@ -1,5 +1,5 @@
 import {blockButton, unblockButton} from './user/util.js';
-import {sendData, deleteData} from './api.js';
+import {sendData, deleteData} from './api/base/xhr-api.js';
 import {AppStorage, Url} from './const.js';
 import {getCurrentPicture} from './storage.js';
 

@@ -1,4 +1,4 @@
-import {createUser} from './user-api.js';
+import {createUser} from '../api/user/xhr-api.js';
 import {blockButton, unblockButton} from './util.js';
 
 const signupFormElement = document.querySelector('#signup-modal form');

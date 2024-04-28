@@ -5,7 +5,7 @@ import {closeUploadModal} from './upload-modal.js';
 import {setUploadFormSubmit} from './upload-form.js';
 import {updatePicture} from './picture-list.js';
 import {start} from './start.js';
-import {getData} from './api.js';
+import {getData} from './api/base/fetch-api.js';
 import {renderProgressBar} from "./message.js";
 import {AppStorage, Url} from './const.js';
 import {renderPicturesList, pictures} from './picture-list.js';
@@ -18,28 +18,34 @@ start();
 setUploadFormSubmit(() => {
     closeUploadModal();
     renderProgressBar(MessageType.SUCCESS, () => {
-        getData(Url.PICTURE.GET, (response) => {
-            renderPicturesList(JSON.parse(response), true);
-        });
+        getData(Url.PICTURE.GET)
+            .then((picture) => {
+                const data = picture.data;
+                renderPicturesList(data, true);
+            });
     });
 });
 
 setCommentFormSabmit((pictureId) => {
-    getData(Url.PICTURE.GET + `/${pictureId}`, (picture) => {
-        localStorage.setItem(AppStorage.PICTURE, JSON.stringify(picture));
-        const indexPicture = pictures.indexOf(pictures.find((picture) => picture.id === pictureId));
-        pictures.splice(indexPicture, 1, picture);
-        updatePicture(picture);
-        renderCommentList(picture.comments);
-    }, true);
+    getData(Url.PICTURE.GET + `/${pictureId}`)
+        .then((picture) => {
+            const data = picture.data;
+            localStorage.setItem(AppStorage.PICTURE, JSON.stringify(data));
+            const indexPicture = pictures.indexOf(pictures.find((picture) => picture.id === pictureId));
+            pictures.splice(indexPicture, 1, data);
+            updatePicture(data);
+            renderCommentList(data.comments);
+        });
 });
 
 setLikesCountClick((pictureId) => {
-    getData(Url.PICTURE.GET + `/${pictureId}`, (picture) => {
-        localStorage.setItem(AppStorage.PICTURE, JSON.stringify(picture));
-        const indexPicture = pictures.indexOf(pictures.find((picture) => picture.id === pictureId));
-        pictures.splice(indexPicture, 1, picture);
-        updatePicture(picture);
-        updateLikesCount(picture.likes);
-    }, true);
+    getData(Url.PICTURE.GET + `/${pictureId}`)
+        .then((picture) => {
+            const data = picture.data;
+            localStorage.setItem(AppStorage.PICTURE, JSON.stringify(data));
+            const indexPicture = pictures.indexOf(pictures.find((picture) => picture.id === pictureId));
+            pictures.splice(indexPicture, 1, data);
+            updatePicture(data);
+            updateLikesCount(data.likes);
+        });
 });

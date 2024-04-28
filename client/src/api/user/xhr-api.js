@@ -1,4 +1,4 @@
-import {Url} from '../const.js';
+import {Url} from '../../const.js';
 
 const signupFormElement = document.querySelector('#signup-modal form');
 const loginFormElement = document.querySelector('#login-modal form');

@@ -1,4 +1,4 @@
-import {createToken} from './user-api.js';
+import {createToken} from '../api/user/xhr-api.js';
 import {blockButton, unblockButton} from './util.js';
 
 const loginFormElement = document.querySelector('#login-modal form');

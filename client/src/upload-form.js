@@ -1,6 +1,6 @@
 import {VALIDATION_ERROR_KEYS, VALIDATORS} from './validation.js';
 import {blockButton, unblockButton} from './user/util.js';
-import {sendData} from './api.js';
+import {sendData} from './api/base/xhr-api.js';
 import {AppStorage, Url} from './const.js';
 
 const MAX_DESCRIPTION_LENGTH = 400;

@@ -1,4 +1,4 @@
-import {deleteToken} from './user-api.js';
+import {deleteToken} from '../api/user/xhr-api.js';
 import {blockButton, unblockButton} from './util.js';
 import {AppStorage} from '../const.js';
 import {clearEntityList} from '../util.js';

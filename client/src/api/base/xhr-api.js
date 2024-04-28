@@ -1,4 +1,4 @@
-import {AppStorage} from './const.js';
+import {AppStorage} from '../../const.js';
 
 const getToken = () => {
     if (!localStorage.getItem(AppStorage.ACCESS_TOKEN)){
