@@ -1,15 +1,14 @@
 import {blockButton, unblockButton} from './user/util.js';
-import {sendData, deleteData} from './api/base/xhr-api.js';
+import {sendData} from "./api/base/fetch-api.js";
+import {deleteData} from  './api/base/fetch-api'
 import {AppStorage, Url} from './const.js';
-import {getCurrentPicture} from './storage.js';
 
 const submitBtnElement = document.querySelector('.likes-count');
 const previewModalLikesElement = document.querySelector('.likes-count');
 
 const getLike = (likes, userId, pictureId) => {
-
     return likes.find((like) => {
-        return like.user_id == userId && like.picture_id == pictureId;
+        return (like.user_id === userId) && (like.picture_id === pictureId);
     })
 };
 
@@ -30,36 +29,31 @@ const setLike = (onSuccess, userId, pictureId) => {
     formData.set('user_id', userId);
     formData.set('picture_id', pictureId);
     
-    blockButton(submitBtnElement);
+    blockButton(submitBtnElement, '');
     window.setTimeout(() => {
-        sendData(
-            Url.LIKE.POST,
-            () => {
+        sendData(Url.LIKE.POST, formData)
+            .then(() => {
                 onSuccess();
                 unblockButton(submitBtnElement);
-            },
-            () => {
+            })
+            .catch(() => {
                 unblockButton(submitBtnElement);
-            },
-            formData
-        );
+            })
     }, 500);
 }
 
 const removeLike = (onSuccess, likeId) => {
-    blockButton(submitBtnElement);
+    blockButton(submitBtnElement, '');
+
     window.setTimeout(() => {
-        deleteData(
-            Url.LIKE.DELETE + likeId,
-            () => {
+        deleteData(Url.LIKE.DELETE + likeId)
+            .then(() => {
                 onSuccess();
                 unblockButton(submitBtnElement);
-            },
-            () => {
-                console.log(3);
+            })
+            .catch(() => {
                 unblockButton(submitBtnElement);
-            }
-        )
+            })
     }, 500)
 }
 

@@ -1,5 +1,5 @@
 import {blockButton, unblockButton} from './user/util.js';
-import {sendData} from './api/base/xhr-api.js';
+import {sendData} from './api/base/fetch-api.js';
 import {AppStorage, Url} from './const.js';
 
 const commentFormElement = document.querySelector('#comment-form');
@@ -23,16 +23,15 @@ const setCommentFormSabmit = (onSuccess, onFail) => {
 
         blockButton(submitBtnElement, 'Отправка');
         window.setTimeout(() => {
-            sendData(
-                Url.COMMENT.POST,
-                () => {
+            sendData(Url.COMMENT.POST, formData)
+                .then(() => {
                     onSuccess(picture.id);
                     commentInputElement.value = '';
                     unblockButton(submitBtnElement);
-                },
-                () => {},
-                formData
-            );
+                })
+                .catch(() => {
+                    onFail();
+                });
         }, 500);
     });
 };

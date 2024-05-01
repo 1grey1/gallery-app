@@ -22,7 +22,6 @@ const start = () => {
             const data = effects.data;
             localStorage.setItem(AppStorage.EFFECTS, JSON.stringify(data));
             renderEffectsList();
-            console.log(effects);
         });
 
     getData(Url.PICTURE.GET)

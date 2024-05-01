@@ -8,7 +8,7 @@ const getToken = () => {
     return JSON.parse(localStorage.getItem(AppStorage.ACCESS_TOKEN)).token;
 }
 
-const getData = (url, parse = false) => {
+const getData = (url) => {
     const token = getToken();
     let responseOk;
     let responseStatus;
@@ -31,6 +31,61 @@ const getData = (url, parse = false) => {
                 errors: null
             };
         });
+};
+
+const sendData = (url, body) => {
+    const token = getToken();
+    let respons;
+    let responseStatus;
+
+    return fetch(url, {
+        method: 'POST',
+        body,
+        headers: {
+            Authorization: `Basic ${btoa(token + ':')}`
+        }
+    })
+        .then((response) => {
+            respons = response;
+            responseStatus = response.status;
+            return response.json();
+        })
+        .then((data) => {
+            return {
+                data: respons.ok ? data : null,
+                status: responseStatus,
+                errors: respons.ok ? null : JSON.parse(respons.headers.get('error'))
+            };
+        });
+};
+
+const deleteData = (url) => {
+    const token = getToken();
+    let respons;
+    let responseStatus;
+
+    return fetch(url, {
+        method: 'DELETE',
+        headers: {
+            Authorization: `Basic ${btoa(token + ':')}`
+        }
+    })
+        .then((response) => {
+            respons = response;
+            responseStatus = response.status;
+            return response;
+        })
+        .then((data) => {
+            return {
+                data: respons.ok ? data : null,
+                status: responseStatus,
+                errors: null
+            };
+        });
 }
 
-export {getData};
+export {
+    getData,
+    sendData,
+    deleteData
+};

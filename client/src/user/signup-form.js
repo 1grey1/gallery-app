@@ -1,4 +1,4 @@
-import {createUser} from '../api/user/xhr-api.js';
+import {createUser} from '../api/user/fetch-api.js';
 import {blockButton, unblockButton} from './util.js';
 
 const signupFormElement = document.querySelector('#signup-modal form');
@@ -13,15 +13,14 @@ const setSignupFormSubmit = (onSuccess, onFail) => {
         window.setTimeout(() => {
             createUser(
                 formData,
-                () => {
-                    onSuccess();
-                    unblockButton(submitBtnElement);
-                },
                 (errors, SIGNUP_FIELDS, signupFormElement) => {
                     onFail(errors, SIGNUP_FIELDS, signupFormElement);
                     unblockButton(submitBtnElement);
                 }
-            );
+            ).then(() => {
+                onSuccess();
+                unblockButton(submitBtnElement);
+            });
         }, 2000);
     });
 }
